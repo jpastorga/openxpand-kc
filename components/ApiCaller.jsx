@@ -41,7 +41,8 @@ export default function ApiCaller({ accessToken, apiUrl }) {
         throw new Error('Method not supported');
       }
     } catch (error) {
-      throw error.response?.data || error.message;
+      console.error('Error making request:', error)
+      throw error.response?.data || error;
     }
   };
 
@@ -74,11 +75,12 @@ export default function ApiCaller({ accessToken, apiUrl }) {
       setResponses((prev) => ({ ...prev, [apiName]: response.data }));
     } catch (error) {
 
-      console.error(`Error al llamar a ${apiName}:`, error.response?.data || error.message);
+      console.error(`Error - ${apiName}:`, error);
       setResponses((prev) => ({
         ...prev,
-        [apiName]: { error: `Error code: ${error.response?.data.code}` },
+        [apiName]: { error: `${error.code || 'unknown'} - ${error.message || 'unknown'}` },
       }));
+
     } finally {
       setLoading((prev) => ({ ...prev, [apiName]: false }));
     }
