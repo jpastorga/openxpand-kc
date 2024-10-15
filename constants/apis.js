@@ -42,6 +42,20 @@ const apiList = [
       body: '{"device": {"phoneNumber": "541141832256"},"area": {"areaType": "CIRCLE","center": {"latitude": 50.60,"longitude": 50.735851},"radius": 50000}}',
       displayName: 'Device Location - Verify',
       description: 'Valida la ubicación actual de un dispositivo.',
+    },
+    {
+      name: 'simSwap',
+      path: '/sim-swap/v0/retrieve-date',
+      body: '{"phoneNumber": "+541168589259"}',
+      displayName: 'SIM Swap',
+      description: 'Retrieve SIM swap date',
+    },
+    {
+      name: "simSwapCheck",
+      path: "/sim-swap/v0/check",
+      body: '{"phoneNumber": "541168832384"}',
+      displayName: "SIM Swap Check",
+      description: "Checks if SIM swap has been performed during a past period of time.",
     }
   ];
 
