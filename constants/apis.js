@@ -46,14 +46,14 @@ const apiList = [
     {
       name: 'simSwap',
       path: '/sim-swap/v0/retrieve-date',
-      body: '{"phoneNumber": "+541168589259"}',
+      body: '{"phoneNumber": "543462641443"}',
       displayName: 'SIM Swap',
       description: 'Retrieve SIM swap date',
     },
     {
       name: "simSwapCheck",
       path: "/sim-swap/v0/check",
-      body: '{"phoneNumber": "541168832384"}',
+      body: '{"phoneNumber": "543462641443"}',
       displayName: "SIM Swap Check",
       description: "Checks if SIM swap has been performed during a past period of time.",
     }
