@@ -52,7 +52,7 @@ export default function ApiCaller({ accessToken, apiUrl }) {
     try {
       parsedData = inputData ? JSON.parse(inputData) : {};
     } catch (error) {
-      alert('Please, enter a valid JSON');
+      console.error('Error parsing data:', error);
       return;
     }
     

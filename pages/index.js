@@ -1,5 +1,5 @@
 // pages/index.js
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import axios from 'axios';
 import styles from '../styles/Form.module.css';
@@ -23,16 +23,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const hasHandledCode = useRef(false);
 
-  /*
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-*/
-
  const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -52,6 +42,7 @@ export default function Home() {
       };
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -77,7 +68,7 @@ export default function Home() {
     window.location.href = url;
   };
 
- const handleCodeExchange = async (code) => {
+  const handleCodeExchange = useCallback(async (code) => {
     setIsLoading(true);
     try {
       const { environment } = formData;
@@ -90,27 +81,26 @@ export default function Home() {
         auth_url: auth,
         tenant: formData.tenant,
       });
-
+  
       setAccessToken(response.data.access_token);
     } catch (err) {
-      console.error('Error al obtener access_token:', err.response?.data || err.message);
-      setError('Error al obtener access_token');
+      console.error('handleCodeExchange error:', err.response?.data || err.message);
+      setError('Error getting access token');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [formData]);
 
   useEffect(() => {
-    // Extraer el 'code' de la URL si está presente
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
-
+  
     if (code && !hasHandledCode.current) {
-      hasHandledCode.current = true; // Marcar que ya se ha manejado el código
+      hasHandledCode.current = true;
       handleCodeExchange(code);
       window.history.replaceState({}, document.title, '/');
     }
-  }, []);
+  }, [handleCodeExchange]); 
 
   return (
     <div className={styles.container}>
@@ -174,9 +164,8 @@ export default function Home() {
                 ))}
               </select>
           </div>
-          
 
-          {/* Campo de Scope */}
+          {/* Scopes */}
           <div className={styles.formGroup}>
             <label className={styles.label}>Scopes:</label>
             <div className={styles.scopeContainer}>
@@ -196,7 +185,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Botones */}
           <div className={styles.buttonGroup}>
             <button type="submit" className={styles.submitButton}>Iniciar Sesión</button>
             <button
@@ -230,7 +218,7 @@ export default function Home() {
             </>
           )}
 
-          {/* Mostrar el componente ApiCaller una vez autenticado */}
+          {/* ApiCaller Component */}
           {accessToken && <ApiCaller accessToken={accessToken} apiUrl={formData.environment} />}
         </div>
       )}
