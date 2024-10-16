@@ -196,6 +196,7 @@ export default function Home() {
           </div>
         </form>
       ) : (
+        <>
         <div className={styles.authenticated}>
           {isLoading ? (
             <p>Cargando access_token...</p>
@@ -213,14 +214,14 @@ export default function Home() {
                 className={styles.clearButton}
                 onClick={() => { window.location.href = window.location.origin;}}
               >
-                Cerrar Sesión
+                Bye
               </button>
             </>
           )}
-
+        </div>
           {/* ApiCaller Component */}
           {accessToken && <ApiCaller accessToken={accessToken} apiUrl={formData.environment} />}
-        </div>
+        </>
       )}
 
       {error && <p className={styles.error}>{error}</p>}

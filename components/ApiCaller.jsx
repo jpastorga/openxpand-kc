@@ -87,8 +87,7 @@ export default function ApiCaller({ accessToken, apiUrl }) {
   };
 
   return (
-    <div className="w-full max-w-4xl mt-10">
-      <h2 className="text-2xl font-semibold mb-6 text-center">Openxpand APIs</h2>
+    <div className="w-[35%] max-w-4xl mt-9">
       <div className="space-y-4">
         {apiList.map((api, index) => (
           <div key={api.name} className="border rounded-md">

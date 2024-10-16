@@ -2,14 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 30px;
     font-family: Arial, sans-serif;
     padding: 20px;
   }
   
   .title {
     font-size: 2rem;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     color: #333;
   }
   
@@ -98,7 +98,7 @@
   
   .authenticated {
     background-color: #e7f3fe;
-    padding: 25px 30px;
+    padding: 15px 20px;
     border-radius: 8px;
     border: 1px solid #2196F3;
     text-align: center;
