@@ -39,7 +39,7 @@ export default function ApiCaller({ accessToken, apiUrl }) {
       };
 
       const response = await axios(config);
-      return response.data;
+      return response;
     } catch (error) {
       console.error('Error making request:', error);
       throw error.response?.data || error.message || error;
