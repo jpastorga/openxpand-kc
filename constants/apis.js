@@ -56,6 +56,22 @@ const apiList = [
       body: '{"phoneNumber": "543462641443"}',
       displayName: "SIM Swap Check",
       description: "Checks if SIM swap has been performed during a past period of time.",
+    },
+    {
+      name: "queryConsent",
+      path: "/consent/v0/query",
+      body: '',
+      displayName: "Query Consent",
+      description: "Retrieve the details of the consent given by the user to a specific clientId.",
+      method: 'GET',
+    },
+    {
+      name: "revokeConsent",
+      path: "/consent/v0/revoke",
+      body: '',
+      displayName: "Revoke Consent",
+      description: "Revoke the consent previously given by the user to a specific clientId.",
+      method: 'DELETE',
     }
   ];
 

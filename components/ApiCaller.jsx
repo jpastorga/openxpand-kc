@@ -31,18 +31,18 @@ export default function ApiCaller({ accessToken, apiUrl }) {
 
   const makeRequest = async ({ method = 'POST', url, data = {}, headers = {} }) => {
     try {
-      if (method === 'POST') {
-        const response = await axios.post(url, data, { headers });
-        return response;
-      } else if (method === 'GET') {
-        const response = await axios.get(url, { headers, params: data });
-        return response;
-      } else {
-        throw new Error('Method not supported');
-      }
+      const config = {
+        method,
+        url,
+        headers,
+        ...(method === 'GET' ? { params: data } : { data })
+      };
+
+      const response = await axios(config);
+      return response.data;
     } catch (error) {
-      console.error('Error making request:', error)
-      throw error.response?.data || error;
+      console.error('Error making request:', error);
+      throw error.response?.data || error.message || error;
     }
   };
 
