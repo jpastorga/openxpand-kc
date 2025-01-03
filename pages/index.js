@@ -36,7 +36,7 @@ export default function Home() {
         : prevData.scope.filter((scope) => scope !== value);
       return {
         ...prevData,
-        scope: updatedScopes
+        scope: updatedScopes,
       };
     });
   };
@@ -44,7 +44,7 @@ export default function Home() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { clientId, clientSecret, scope, tenant, environment } = formData;
-    if (!clientId || !clientSecret || scope.length === 0 || !tenant || !environment ) {
+    if (!clientId || !clientSecret || scope.length === 0 || !tenant || !environment) {
       setError('Please fill in all the required fields');
       return;
     }
@@ -97,7 +97,7 @@ export default function Home() {
       handleCodeExchange(code);
       window.history.replaceState({}, document.title, '/');
     }
-  }, [handleCodeExchange]); 
+  }, [handleCodeExchange]);
 
   return (
     <div className={styles.container}>
@@ -114,6 +114,7 @@ export default function Home() {
               onChange={handleChange}
               required
               className={styles.input}
+              disabled={isLoading}
             />
           </div>
 
@@ -127,6 +128,7 @@ export default function Home() {
               onChange={handleChange}
               required
               className={styles.input}
+              disabled={isLoading}
             />
           </div>
 
@@ -140,6 +142,7 @@ export default function Home() {
               onChange={handleChange}
               required
               className={styles.input}
+              disabled={isLoading}
             />
           </div>
 
@@ -151,18 +154,18 @@ export default function Home() {
               value={formData.environment}
               onChange={handleChange}
               required
-              className={styles.input} 
-              >
+              className={styles.input}
+              disabled={isLoading}
+            >
               <option value="">-- Select an Environment --</option>
               {Object.keys(environments).map((env) => (
-                  <option key={env} value={env}>
-                    {env.charAt(0).toUpperCase() + env.slice(1)}
-                  </option>
-                ))}
-              </select>
+                <option key={env} value={env}>
+                  {env.charAt(0).toUpperCase() + env.slice(1)}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Scopes */}
           <div className={styles.formGroup}>
             <label className={styles.label}>Scopes:</label>
             <div className={styles.scopeContainer}>
@@ -175,6 +178,7 @@ export default function Home() {
                     checked={formData.scope.includes(scope)}
                     onChange={handleScopeChange}
                     className={styles.checkbox}
+                    disabled={isLoading}
                   />
                   {scope.includes('#') ? scope.split('#')[1] : scope}
                 </label>
@@ -183,10 +187,17 @@ export default function Home() {
           </div>
 
           <div className={styles.buttonGroup}>
-            <button type="submit" className={styles.submitButton}>Iniciar Sesión</button>
+            <button
+              type="submit"
+              className={`${styles.submitButton} ${isLoading ? styles.loading : ''}`}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Loading...' : 'Iniciar Sesión'}
+            </button>
             <button
               type="button"
               className={styles.clearButton}
+              disabled={isLoading}
             >
               Limpiar Datos
             </button>
@@ -194,24 +205,28 @@ export default function Home() {
         </form>
       ) : (
         <>
-          {/* ApiCaller Component */}
           <ApiCaller accessToken={accessToken} apiUrl={formData.environment} />
-
           <div className="mt-8 flex flex-col items-center">
-            <p className="text-lg font-semibold mb-2">Access Token:</p>
-            <textarea
-              value={accessToken}
-              readOnly
-              rows={5}
-              cols={60}
-              className={`${styles.textarea} text-sm`}
-            />
-            <button
-              className={`${styles.clearButton} mt-4`}
-              onClick={() => { window.location.href = window.location.origin;}}
-            >
-              Bye
-            </button>
+            {isLoading ? (
+              <p className="text-lg font-semibold text-blue-500">Loading...</p>
+            ) : (
+              <>
+                <p className="text-lg font-semibold mb-2">Access Token:</p>
+                <textarea
+                  value={accessToken}
+                  readOnly
+                  rows={5}
+                  cols={60}
+                  className={`${styles.textarea} text-sm`}
+                />
+                <button
+                  className={`${styles.clearButton} mt-4`}
+                  onClick={() => { window.location.href = window.location.origin; }}
+                >
+                  Bye
+                </button>
+              </>
+            )}
           </div>
         </>
       )}
