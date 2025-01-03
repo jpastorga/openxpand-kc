@@ -1,4 +1,3 @@
-// pages/index.js
 import { useState, useEffect, useRef, useCallback } from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
 import axios from 'axios';
@@ -16,14 +15,13 @@ const initialFormData = {
 };
 
 export default function Home() {
-
   const [formData, setFormData] = useLocalStorage('openxpandFormData', initialFormData);
   const [accessToken, setAccessToken] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const hasHandledCode = useRef(false);
 
- const handleChange = (e) => {
+  const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -45,7 +43,6 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     const { clientId, clientSecret, scope, tenant, environment } = formData;
     if (!clientId || !clientSecret || scope.length === 0 || !tenant || !environment ) {
       setError('Please fill in all the required fields');
@@ -197,30 +194,25 @@ export default function Home() {
         </form>
       ) : (
         <>
-        <div className={styles.authenticated}>
-          {isLoading ? (
-            <p>Cargando access_token...</p>
-          ) : (
-            <>
-              <p>Access Token:</p>
-              <textarea
-                value={accessToken}
-                readOnly
-                rows={5}
-                cols={60}
-                className={styles.textarea}
-              />
-              <button
-                className={styles.clearButton}
-                onClick={() => { window.location.href = window.location.origin;}}
-              >
-                Bye
-              </button>
-            </>
-          )}
-        </div>
           {/* ApiCaller Component */}
-          {accessToken && <ApiCaller accessToken={accessToken} apiUrl={formData.environment} />}
+          <ApiCaller accessToken={accessToken} apiUrl={formData.environment} />
+
+          <div className="mt-8 flex flex-col items-center">
+            <p className="text-lg font-semibold mb-2">Access Token:</p>
+            <textarea
+              value={accessToken}
+              readOnly
+              rows={5}
+              cols={60}
+              className={`${styles.textarea} text-sm`}
+            />
+            <button
+              className={`${styles.clearButton} mt-4`}
+              onClick={() => { window.location.href = window.location.origin;}}
+            >
+              Bye
+            </button>
+          </div>
         </>
       )}
 
