@@ -33,7 +33,7 @@ const apiList = [
       path: 'device-status/v0/roaming',
       body: '{"device": {"phoneNumber": "541141832256"}}',
       displayName: 'Device Status - Roaming',
-      description: 'Obtains if a device is roaming.',
+      description: 'Checks if the device is currently in roaming mode.',
       usecase: 'deviceStatus',
       scope: 'dpv:FraudPreventionAndDetection#device-status',
     },
