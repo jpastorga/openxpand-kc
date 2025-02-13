@@ -5,7 +5,7 @@ import axios from 'axios';
 import environments from '../constants/environments';
 import apiList from '../constants/apis';
 
-export default function ApiCaller({ accessToken, apiUrl }) {
+export default function ApiCaller({ accessToken, apiUrl, scope }) {
   const [activeIndex, setActiveIndex] = useState(null);
   const [responses, setResponses] = useState({});
   const [loading, setLoading] = useState({});
@@ -63,7 +63,7 @@ export default function ApiCaller({ accessToken, apiUrl }) {
       const { api } = environments[apiUrl];
       const response = await makeRequest({
         method,
-        url: `${api}/api/camara/${path}`,
+        url: `${api}/${path}`,
         data: parsedData,
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -84,10 +84,12 @@ export default function ApiCaller({ accessToken, apiUrl }) {
   };
 
   const groupedApis = apiList.reduce((acc, api) => {
-    if (!acc[api.usecase]) {
-      acc[api.usecase] = [];
+    if (scope.includes(api.scope)) {
+      if (!acc[api.usecase]) {
+        acc[api.usecase] = [];
+      }
+      acc[api.usecase].push(api);
     }
-    acc[api.usecase].push(api);
     return acc;
   }, {});
 
