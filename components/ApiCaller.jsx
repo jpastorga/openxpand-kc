@@ -4,6 +4,7 @@ import { coy } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import axios from 'axios';
 import environments from '../constants/environments';
 import apiList from '../constants/apis';
+import CurlGenerator from './CurlGenerator';
 
 export default function ApiCaller({ accessToken, apiUrl, scope }) {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -141,9 +142,9 @@ export default function ApiCaller({ accessToken, apiUrl, scope }) {
                         className="mt-4 px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200 w-full"
                         disabled={loading[api.name]}
                       >
-                        {loading[api.name] ? 'Loading...' : 'Enviar'}
+                        {loading[api.name] ? 'Loading...' : 'Send Request'}
                       </button>
-
+                      <CurlGenerator url={`${environments[apiUrl].api}/${api.path}`} method={api?.method} accessToken={accessToken} body={api.body} />
                       {/* Response Area */}
                       {responses[api.name] && (
                         <div className="mt-6 max-h-[300px] overflow-auto bg-gray-100 p-4 rounded-md">
