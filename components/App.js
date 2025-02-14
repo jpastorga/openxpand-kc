@@ -11,6 +11,19 @@ import scopeOptions from "../constants/scopes";
 export default function App() {
   const router = useRouter();
   const { clientId, clientSecret, tenant, scope } = router.query;
+
+  const safeDecode = (value) => {
+    try {
+      return value && value !== "" ? atob(decodeURIComponent(value)) : "";
+    } catch (error) {
+      console.error("Error al decodificar:", value, error.message);
+      return "";
+    }
+  };
+
+  const clientIdDecrypted = safeDecode(clientId);
+  const clientSecretDecrypted = safeDecode(clientSecret);
+  const tenantDecrypted = safeDecode(tenant);
   const parsedScope = scope ? decodeURIComponent(scope).split(" ") : [];
   
   const formattedScopeOptions = scopeOptions.map(option => {
@@ -19,13 +32,12 @@ export default function App() {
   });
 
   const initialFormData = {
-    clientId: clientId || "",
-    clientSecret: clientSecret || "",
+    clientId: clientIdDecrypted || "",
+    clientSecret: clientSecretDecrypted || "",
     scope: parsedScope,
     environment: Object.keys(environments)[0] || "",
-    tenant: tenant || "",
+    tenant: tenantDecrypted || "",
   };
-
 
   const [formData, setFormData] = useLocalStorage("openxpandFormData", initialFormData);
   const [accessToken, setAccessToken] = useState(null);
@@ -38,13 +50,13 @@ export default function App() {
     if (router.isReady) {
       setFormData((prevData) => ({
         ...prevData,
-        clientId: clientId || prevData.clientId,
-        clientSecret: clientSecret || prevData.clientSecret,
-        tenant: tenant || prevData.tenant,
+        clientId: clientIdDecrypted || prevData.clientId,
+        clientSecret: clientSecretDecrypted || prevData.clientSecret,
+        tenant: tenantDecrypted || prevData.tenant,
         scope: parsedScope.map(s => formattedScopeOptions.find(opt => opt.key === s)?.value + "#" + s).filter(Boolean),
       }));
     }
-  }, [router.isReady, clientId, clientSecret, tenant, scope, setFormData]);
+  }, [router.isReady, clientIdDecrypted, clientSecretDecrypted, tenantDecrypted, scope, setFormData]);
 
   const handleChange = (e) => {
     setFormData({
