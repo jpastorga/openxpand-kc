@@ -227,9 +227,9 @@ export default function App() {
             </div>
           </div>
 
-          <div className={styles.buttonGroup}>
+          <div className="flex items-center justify-center font-bold">
             <button type="submit" className={`${styles.submitButton} ${isLoading ? styles.loading : ""}`} disabled={isLoading}>
-              {isLoading ? "Loading..." : "Iniciar Sesión"}
+              {isLoading ? "Loading..." : "Log in"}
             </button>
           </div>
         </form>
