@@ -99,7 +99,7 @@ export default function ApiCaller({ accessToken, apiUrl, scope }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {Object.entries(groupedApis).map(([usecase, apis], usecaseIndex) => (
           <div key={usecase} className="border rounded-lg p-6 bg-gray-50 shadow-lg min-w-[600px]">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6 capitalize">{usecase}</h2>
+            <h2 className="font-sans text-gray-900 font-bold text-2xl mb-4 capitalize">{usecase}</h2>
             <div className="space-y-6">
               {apis.map((api, index) => (
                 <div key={api.name} className="border rounded-md bg-white shadow-sm p-6">
@@ -108,7 +108,7 @@ export default function ApiCaller({ accessToken, apiUrl, scope }) {
                     onClick={() => toggleAccordion(`${usecaseIndex}-${index}`)}
                     className="w-full px-4 py-3 text-left bg-gray-200 hover:bg-gray-300 focus:outline-none flex justify-between items-center"
                   >
-                    <span className="font-medium">{api.displayName}</span>
+                    <span className="font-sans text-gray-700 font-bold">{api.displayName}</span>
                     <svg
                       className={`w-5 h-5 transform transition-transform duration-300 ${
                         activeIndex === `${usecaseIndex}-${index}` ? 'rotate-180' : 'rotate-0'
@@ -125,7 +125,7 @@ export default function ApiCaller({ accessToken, apiUrl, scope }) {
                   {/* Panel */}
                   {activeIndex === `${usecaseIndex}-${index}` && (
                     <div className="mt-4">
-                      <p className="text-sm text-gray-600 mb-4">{api.description}</p>
+                      <p className="font-sans text-sm text-gray-700 mb-4">{api.description}</p>
 
                       {/* Textarea */}
                       <textarea
@@ -139,7 +139,7 @@ export default function ApiCaller({ accessToken, apiUrl, scope }) {
                       {/* API Button */}
                       <button
                         onClick={() => handleSubmit(api.name, api.path, api?.method)}
-                        className="mt-4 px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200 w-full"
+                        className="px-6 py-3 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 transition-colors duration-200 w-full"
                         disabled={loading[api.name]}
                       >
                         {loading[api.name] ? 'Loading...' : 'Send Request'}
@@ -147,7 +147,7 @@ export default function ApiCaller({ accessToken, apiUrl, scope }) {
                       <CurlGenerator url={`${environments[apiUrl].api}/${api.path}`} method={api?.method} accessToken={accessToken} body={api.body} />
                       {/* Response Area */}
                       {responses[api.name] && (
-                        <div className="mt-6 max-h-[300px] overflow-auto bg-gray-100 p-4 rounded-md">
+                        <div className="mt-2 max-h-[300px] overflow-auto bg-gray-100 rounded-md">
                           {responses[api.name].error ? (
                             <p className="text-red-500">{responses[api.name].error}</p>
                           ) : (

@@ -41,7 +41,7 @@ export default function CurlGenerator({ url, method = "POST", accessToken = null
   };
 
   return (
-    <div className="p-2 flex flex-col gap-2">
+    <div className="mt-2 flex flex-col">
       <Button variant="outline" onClick={generateCurl}>Show as cURL command</Button>
       {displayCurlCommand && (
         <div className="bg-gray-800 text-white p-2 rounded-lg flex items-center gap-2">

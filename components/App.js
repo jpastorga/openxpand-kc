@@ -7,6 +7,7 @@ import styles from "../styles/Form.module.css";
 import ApiCaller from "./ApiCaller";
 import environments from "../constants/environments";
 import scopeOptions from "../constants/scopes";
+import StepWizard from "./StepWizard";
 
 export default function App() {
   const router = useRouter();
@@ -45,6 +46,24 @@ export default function App() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const hasHandledCode = useRef(false);
+
+  const steps = [
+    {
+      title: "Step 1:",
+      description: "Authorization code request (GET: user-side)",
+      url: `https://opengw.dev.openxpand.com/auth/realms/telecom/protocol/openid-connect/auth?response_type=code&client_id=${formData.clientId}&redirect_uri=&scope=${encodeURIComponent(selectedScope.join(" "))}`,
+      method: "GET"
+    },
+    {
+      title: "Step 2:",
+      description: "Token request with authentication code (POST: client-side)",
+      url: "https://opengw.dev.openxpand.com/auth/realms/telecom/protocol/openid-connect/token",
+      method: "POST",
+      headers: 'Content-Type: application/x-www-form-urlencoded',
+      body: `"grant_type=authorization_code&code=&redirect_uri=&client_id=${formData.clientId}&client_secret=${formData.clientSecret}"`
+    },
+  ];
+
 
   useEffect(() => {
     if (router.isReady) {
@@ -142,11 +161,11 @@ export default function App() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>Openxpand Quick Tester</h1>
+      <h1 className="text-3xl font-bold mb-6 font-sans">Openxpand Quick Tester</h1>
       {!accessToken ? (
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
-            <label htmlFor="clientId" className={styles.label}>Client Id:</label>
+            <label htmlFor="clientId" className="font-sans text-gray-900 font-bold">Client Id:</label>
             <input
               type="text"
               id="clientId"
@@ -160,7 +179,7 @@ export default function App() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="clientSecret" className={styles.label}>Client Secret:</label>
+            <label htmlFor="clientSecret" className="font-sans text-gray-900 font-bold">Client Secret:</label>
             <input
               type="password"
               id="clientSecret"
@@ -174,7 +193,7 @@ export default function App() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="tenant" className={styles.label}>Tenant:</label>
+            <label htmlFor="tenant" className="font-sans text-gray-900 font-bold">Tenant:</label>
             <input
               type="text"
               id="tenant"
@@ -188,7 +207,7 @@ export default function App() {
           </div>
 
           <div className={styles.formGroup}>
-            <label htmlFor="environment" className={styles.label}>Environment:</label>
+            <label htmlFor="environment" className="font-sans text-gray-900 font-bold">Environment:</label>
             <select
               id="environment"
               name="environment"
@@ -208,7 +227,7 @@ export default function App() {
           </div>
 
           <div className={styles.formGroup}>
-            <label className={styles.label}>Scopes:</label>
+            <label className="font-sans text-gray-900 font-bold">Scopes:</label>
             <div className={styles.scopeContainer}>
               {formattedScopeOptions.map(({ key, value }) => (
                 <label key={key} className={styles.checkboxLabel}>
@@ -236,19 +255,12 @@ export default function App() {
       ) : (
         <>
           <ApiCaller accessToken={accessToken} apiUrl={formData.environment} scope={selectedScope} />
-          <div className="mt-8 flex flex-col items-center">
+          <div className="w-full max-w-[1200px] mt-8 flex flex-col items-center">
             {isLoading ? (
               <p className="text-lg font-semibold text-blue-500">Loading...</p>
             ) : (
               <>
-                <p className="text-lg font-semibold mb-2">Access Token:</p>
-                <textarea
-                  value={accessToken}
-                  readOnly
-                  rows={5}
-                  cols={60}
-                  className={`${styles.textarea} text-sm`}
-                />
+                <StepWizard title={"How to implement this authorization code flow in your application"} steps={steps} />
                 <button
                   className={`${styles.clearButton} mt-4`}
                   onClick={() => { window.location.href = window.location.origin; }}
