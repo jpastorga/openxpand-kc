@@ -51,7 +51,7 @@ export default function App() {
     {
       title: "Step 1:",
       description: "Authorization code request (GET: user-side)",
-      url: `https://opengw.dev.openxpand.com/auth/realms/telecom/protocol/openid-connect/auth?response_type=code&client_id=${formData.clientId}&redirect_uri=&scope=${encodeURIComponent(selectedScope.join(" "))}`,
+      url: `https://opengw.dev.openxpand.com/auth/realms/telecom/protocol/openid-connect/auth?response_type=code&client_id=${formData.clientId}&redirect_uri=&scope=${encodeURIComponent(selectedScope?.join(" "))}`,
       method: "GET"
     },
     {
