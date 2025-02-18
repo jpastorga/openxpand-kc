@@ -56,7 +56,7 @@ export default function App() {
     },
     {
       title: "Step 2:",
-      description: "Token request with authentication code (POST: client-side)",
+      description: "Token request with authorization code (POST: client-side)",
       url: "https://opengw.dev.openxpand.com/auth/realms/telecom/protocol/openid-connect/token",
       method: "POST",
       headers: 'Content-Type: application/x-www-form-urlencoded',
