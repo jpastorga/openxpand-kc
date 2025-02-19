@@ -228,19 +228,19 @@ export default function App() {
 
           <div className={styles.formGroup}>
             <label className="font-sans text-gray-900 font-bold">Scopes:</label>
-            <div className={styles.scopeContainer}>
+            <div className="grid grid-cols-2 gap-4">
               {formattedScopeOptions.map(({ key, value }) => (
-                <label key={key} className={styles.checkboxLabel}>
+                <label key={key} className="flex items-center space-x-2">
                   <input
                     type="checkbox"
                     name="scope"
                     value={`${value}#${key}`}
                     checked={formData.scope.includes(`${value}#${key}`)}
                     onChange={handleScopeChange}
-                    className={styles.checkbox}
+                    className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring focus:ring-blue-200"
                     disabled={isLoading}
                   />
-                  {key}
+                  <span className="text-gray-700 ml-2">{key}</span>
                 </label>
               ))}
             </div>
