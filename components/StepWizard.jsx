@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { Clipboard } from "lucide-react";
 
 export default function StepWizard({title, steps}) {
   const [activeStep, setActiveStep] = useState(null);
+  const codeRefs = useRef([]);
+
   if (!steps || steps.length === 0) {
     return null;
   }
   const toggleStep = (index) => {
     setActiveStep(activeStep === index ? null : index);
+  };
+
+  const handleCopy = (index) => {
+    const codeElement = codeRefs.current[index];
+    if (codeElement) {
+      navigator.clipboard.writeText(codeElement.innerText)
+        .catch(err => console.error("Failed to copy:", err));
+    }
   };
 
   const generateCurlCommand = (step) => {
@@ -56,9 +67,12 @@ export default function StepWizard({title, steps}) {
                     </svg>
             </button>
             {activeStep === index && (
-              <div className="mt-4 p-4 bg-gray-200 rounded-md">
-                <div class="bg-gray-800 text-white p-2 rounded-lg flex items-center gap-2">
-                    curl -X {step.method} {`'${step.url}'`} {step.headers ? `-H '${step.headers}'` : ''} {step.body ? generateCurlCommand(step.body) : ''}
+              <div key={index}  className="mt-4 p-4 bg-gray-200 rounded-md">
+                <div className="bg-gray-800 text-white p-2 rounded-lg flex items-center gap-2">
+                    <code ref={(el) => (codeRefs.current[index] = el)} className="break-all">
+                      curl -X {step.method} {`'${step.url}'`} {step.headers ? `-H '${step.headers}'` : ''} {step.body ? generateCurlCommand(step.body) : ''}
+                    </code>
+                    <Clipboard  style={{ width: "60px", height: "60px" }} className="cursor-pointer p-2 m-1 bg-gray-700 rounded hover:bg-gray-600" onClick={() => handleCopy(index)} />
                   </div>
               </div>
             )}

@@ -42,6 +42,7 @@ export default function App() {
 
   const [formData, setFormData] = useLocalStorage("openxpandFormData", initialFormData);
   const [accessToken, setAccessToken] = useState(null);
+  const [code, setCode] = useState(null);
   const [selectedScope, setSelectedScope] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,16 +52,16 @@ export default function App() {
     {
       title: "Step 1:",
       description: "Authorization code request (GET: user-side)",
-      url: `https://opengw.dev.openxpand.com/auth/realms/telecom/protocol/openid-connect/auth?response_type=code&client_id=${formData.clientId}&redirect_uri=&scope=${encodeURIComponent(selectedScope?.join(" "))}`,
+      url: `https://opengw.dev.openxpand.com/auth/realms/${formData.tenant}/protocol/openid-connect/auth?response_type=code&client_id=${formData.clientId}&redirect_uri=https://openxpand-kc.vercel.app&scope=${encodeURIComponent(selectedScope?.join(" "))}`,
       method: "GET"
     },
     {
       title: "Step 2:",
       description: "Token request with authorization code (POST: client-side)",
-      url: "https://opengw.dev.openxpand.com/auth/realms/telecom/protocol/openid-connect/token",
+      url: `https://opengw.dev.openxpand.com/auth/realms/${formData.tenant}/protocol/openid-connect/token`,
       method: "POST",
       headers: 'Content-Type: application/x-www-form-urlencoded',
-      body: `"grant_type=authorization_code&code=&redirect_uri=&client_id=${formData.clientId}&client_secret=${formData.clientSecret}"`
+      body: `grant_type=authorization_code&code=${code}&redirect_uri=https://openxpand-kc.vercel.app&client_id=${formData.clientId}&client_secret=${formData.clientSecret}`
     },
   ];
 
@@ -136,7 +137,7 @@ export default function App() {
           auth_url: auth,
           tenant: formData.tenant,
         });
-
+        setCode(code);
         setAccessToken(response.data.access_token);
       } catch (err) {
         console.error("handleCodeExchange error:", err.response?.data || err.message);
