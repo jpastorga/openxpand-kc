@@ -96,7 +96,10 @@ export default function ApiCaller({ accessToken, apiUrl, scope }) {
 
   return (
     <div className="w-full max-w-[1400px] mt-9">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div  className={`grid gap-12 ${
+          Object.keys(groupedApis).length === 1 ? 'grid-cols-1 place-items-center' : 'grid-cols-1 md:grid-cols-2'
+        }`}
+      >
         {Object.entries(groupedApis).map(([usecase, apis], usecaseIndex) => (
           <div key={usecase} className="border rounded-lg p-6 bg-gray-50 shadow-lg min-w-[600px]">
             <h2 className="font-sans text-gray-900 font-bold text-2xl mb-4 capitalize">{usecase}</h2>
