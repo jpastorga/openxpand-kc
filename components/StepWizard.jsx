@@ -24,6 +24,18 @@ export default function StepWizard({title, steps}) {
     <div className="mt-6 flex rounded-lg shadow-lg flex-col items-center border p-6 bg-gray-50">
       <h2 className="font-sans text-gray-900 font-bold text-2xl mb-4">{title}</h2>
       <div className="space-y-4">
+        <div className="border rounded-md bg-white shadow-sm p-6">
+          <span className="font-semibold font-sans text-gray-900">
+          Before starting the authentication code flow process, it is essential to understand the required parameters.
+          </span>
+          <div className="grid grid-cols-2 border border-gray-300">
+            <div className="border border-gray-300 p-4">redirect_uri</div>
+            <div className="border border-gray-300 p-4">the redirect URI is the destination to which the OIDC provider sends the authorization code after the user successfully authenticates by network based authentication.</div>
+            <div className="border border-gray-300 p-4">scope</div>
+            <div className="border border-gray-300 p-4">The scope parameter is a list of scopes that the client wants to request access to.</div>
+          </div>
+
+        </div>
         {steps.map((step, index) => (
           <div key={index} className="border rounded-md bg-white shadow-sm p-6">
             <button
