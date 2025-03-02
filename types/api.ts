@@ -18,6 +18,15 @@ export interface StepWizardProps {
     env: FormDataWithCode;
 }
 
+export interface ApiItem {
+    name: string;
+    path: string;
+    displayName: string;
+    description: string;
+    scope: string;
+    title: string;
+    usecase: string;
+}
 
 export interface FormData {
     clientId: string;

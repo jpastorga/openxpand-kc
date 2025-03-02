@@ -1,15 +1,16 @@
 "use client";
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from "react";
 import Image from "next/image";
 import { scopeOptions, environments } from "./constants";
 import { useLocalStorage } from "../hook/useLocalStorage";
 import { FormData, FormDataWithCode } from "@/types/api";
 import { ApiCaller }  from "@/components/ApiCaller";
 import { StepWizard } from "@/components/StepWizard";
+import { SearchParamsHandler } from "@/components/SearchParamsHandler";
+
 
 export default function Home() {
-  const searchParams = useSearchParams();
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [accessToken, setAccessToken] =  useState<string | null>(null);
@@ -20,12 +21,19 @@ export default function Home() {
   const safeDecode = (value: string) => {
     try {
       return value && value !== "" ? atob(decodeURIComponent(value)) : "";
-    } catch (error: any) {
-      console.error("Error al decodificar:", value, error.message);
+    }  catch (error: unknown) {
+  
+      if (error instanceof Error) {
+        console.error("Error detailed:", error.message);
+      } else {
+        console.error("Unkown error:", error);
+      }
+  
       return "";
     }
   };
 
+  
   const formattedScopeOptions = useMemo(
     () =>
       scopeOptions.map((option: string) => {
@@ -49,7 +57,39 @@ export default function Home() {
     ...formData, 
     code,
     host: environments[formData.environment as keyof typeof environments].auth
-};
+  };
+
+  const handleSearchParamsChange = (searchParams: URLSearchParams) => {
+    const clientIdDecrypted = safeDecode(searchParams.get("clientId") || "");
+    const clientSecretDecrypted = safeDecode(searchParams.get("clientSecret") || "");
+    const tenantDecrypted = safeDecode(searchParams.get("tenant") || "");
+    const scopeFromParams = searchParams.get("scope")?.split(" ") || [];
+
+    const matchedScopes = scopeOptions.filter(option => {
+      const [, optionValue] = option.split("#");
+      return scopeFromParams.includes(optionValue);
+    });
+
+    const newFormData = {
+      ...formData,
+      clientId: clientIdDecrypted || formData.clientId,
+      clientSecret: clientSecretDecrypted || formData.clientSecret,
+      tenant: tenantDecrypted || formData.tenant,
+      scope: matchedScopes.length > 0 ? matchedScopes : formData.scope,
+    };
+
+    if (JSON.stringify(newFormData) !== JSON.stringify(formData)) {
+      setFormData(newFormData);
+    }
+
+    const newCode = searchParams.get("code");
+    if (newCode && !hasHandledCode.current) {
+      hasHandledCode.current = true;
+      setCode(newCode);
+      handleCodeExchange(newCode);
+      window.history.replaceState({}, document.title, "/");
+    }
+  };
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -126,7 +166,7 @@ export default function Home() {
         setCode(code);
         setAccessToken(data.access_token);
       } catch (err) {
-        console.error("handleCodeExchange error:", err.message);
+        console.error("handleCodeExchange error:", err);
         setError("Error getting access token");
       } finally {
         setIsLoading(false);
@@ -136,45 +176,15 @@ export default function Home() {
   );
   
   useEffect(() => {
-    if (!searchParams) return;
-  
-    const clientIdDecrypted = safeDecode(searchParams.get("clientId") as string) || "";
-    const clientSecretDecrypted = safeDecode(searchParams.get("clientSecret") as string) || "";
-    const tenantDecrypted = safeDecode(searchParams.get("tenant") as string) || "";
-    const scope = searchParams.get("scope");
-    const parsedScope = scope ? decodeURIComponent(scope as string).split(" ") : [];
-
-    const newScope = parsedScope
-      .map((s) => formattedScopeOptions.find((opt) => opt.key === s)?.value + "#" + s)
-      .filter(Boolean);
-
-    const newFormData = {
-      clientId: clientIdDecrypted || formData.clientId,
-      clientSecret: clientSecretDecrypted || formData.clientSecret,
-      tenant: tenantDecrypted || formData.tenant,
-      scope: formData.scope.length > 0 ? formData.scope : newScope,
-      environment: formData.environment,
-    };
-
-    if (JSON.stringify(formData) !== JSON.stringify(newFormData)) {
-      setFormData(newFormData);
-    }
-  
-    const code = searchParams.get("code");
-  
-    if (code && !hasHandledCode.current) {
-      hasHandledCode.current = true;
-      handleCodeExchange(code);
-      window.history.replaceState({}, document.title, "/");
-    }
-  }, [searchParams, formattedScopeOptions, handleCodeExchange, formData]);
-
-  useEffect(() => {
     setFormData((prev) => ({ ...prev }));
   }, []);
 
   return (
     <>
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchParamsHandler onParamsChange={handleSearchParamsChange} />
+      </Suspense>
+
       <header className="pl-6 pt-[0.8rem]">
         <Image
           className="dark:invert"

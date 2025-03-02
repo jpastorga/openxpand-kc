@@ -2,9 +2,15 @@ import { useState } from "react";
 import { makeRequest } from "@/lib/api"; 
 import { environments } from "@/app/constants";
 
+interface ApiErrorResponse {
+    status: string;
+    message: string;
+    code: string;
+  }
+  
 export function useApiRequest(accessToken: string, apiUrl: string, initialInputs: { [key: string]: string }) {
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
-  const [responses, setResponses] = useState<{ [key: string]: any }>({});
+  const [responses, setResponses] = useState<{ [key: string]: ApiErrorResponse | null }>({});
   const [inputs, setInputs] = useState(initialInputs);
 
 
@@ -38,7 +44,11 @@ export function useApiRequest(accessToken: string, apiUrl: string, initialInputs
       
       setResponses((prev) => ({
         ...prev,
-        [apiName]: { status: `${error.status || "unknown"}`, message: `${error.message || "unknown"}`, code: `${error.code || "unknown"}` },
+        [apiName]: {
+            status: `${(error as any)?.status || "unknown"}`,
+            message: `${(error as any)?.message || "unknown"}`,
+            code: `${(error as any)?.code || "unknown"}`,
+          } as ApiErrorResponse,
       }));
     } finally {
       setLoading((prev) => ({ ...prev, [apiName]: false }));

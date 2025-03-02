@@ -1,5 +1,5 @@
 import { apiList } from "@/app/constants";
-import { ApiCallerProps } from "@/types/api";
+import { ApiCallerProps, ApiItem } from "@/types/api";
 import { useState } from "react";
 import AccordionButton from "@/components/AccordionButton";
 
@@ -9,15 +9,16 @@ export function ApiCaller({ accessToken, environment, scope }: ApiCallerProps) {
     const toggleAccordion = (index: string) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
-    const groupedApis = apiList.reduce((acc: { [key: string]: any[] }, api) => {
+
+    const groupedApis: Record<string, ApiItem[]> = apiList.reduce((acc: Record<string, ApiItem[]>, api) => {
         if (scope.includes(api.scope)) {
-        if (!acc[api.usecase]) {
-            acc[api.usecase] = [];
-        }
-        acc[api.usecase].push(api);
+            if (!acc[api.usecase]) {
+                acc[api.usecase] = [];
+            }
+            acc[api.usecase].push(api);
         }
         return acc;
-    }, {});
+    }, {} as Record<string, ApiItem[]>);
 
   return (
     <>
