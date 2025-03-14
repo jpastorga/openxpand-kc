@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from "react";
 import { scopeOptions, environments } from "./constants";
-import { useLocalStorage } from "../hook/useLocalStorage";
 import { FormData, FormDataWithCode } from "@/types/api";
 import { Header, Footer, ApiCaller, StepWizard, LoginForm, SearchParamsHandler }  from "@/components";
 import { safeDecode } from "@/utils/safeDecode";
 import { generateAuthUrl } from "@/utils/url";
+import { usePersistentFormData } from "@/hook/usePersistentFormData";
+
 
 export default function Home() {
 
@@ -33,8 +34,7 @@ export default function Home() {
     environment: "sandbox",
   };
   
-  const [storedData, setStoredData] = useLocalStorage("openxpandFormData", initialFormData);
-  const [formData, setFormData] = useState<FormData>(storedData);
+  const [formData, setFormData] = usePersistentFormData("openxpandFormData", initialFormData);
   const formDataWithCode: FormDataWithCode = {
     ...formData, 
     code,
@@ -64,6 +64,11 @@ export default function Home() {
       setFormData(newFormData);
     }
 
+    if (searchParams.get("error") !== null) {
+      setError(`${searchParams.get("error")} selected`);
+      return;
+    }
+
     const newCode = searchParams.get("code");
     if (newCode && !hasHandledCode.current) {
       hasHandledCode.current = true;
@@ -75,10 +80,7 @@ export default function Home() {
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({...formData,[e.target.name]: e.target.value,});
   };
 
 
@@ -92,6 +94,7 @@ export default function Home() {
       return { ...prevData, scope: updatedScopes };
     });
   };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { clientId, clientSecret, scope, tenant, environment } = formData;
@@ -100,7 +103,7 @@ export default function Home() {
       return;
     }
     setError(null);
-    setStoredData(formData);
+    setFormData(formData);
     window.location.href = generateAuthUrl(formData);
   };
 
@@ -146,11 +149,15 @@ export default function Home() {
   
   useEffect(() => {
     setFormData((prev) => ({ ...prev }));
-  }, []);
+  }, [setFormData]);
 
   return (
     <>
-      <Suspense fallback={<div></div>}>
+      <Suspense fallback={
+          <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+            <span className="text-xl font-roboto text-openxpand">Loading...</span>
+          </div>
+      }>
         <SearchParamsHandler onParamsChange={handleSearchParamsChange} />
       </Suspense>
       <Header />

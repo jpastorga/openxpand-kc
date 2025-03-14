@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface SearchParamsHandlerProps {
   onParamsChange: (params: URLSearchParams) => void;
@@ -9,10 +9,12 @@ interface SearchParamsHandlerProps {
 
 export function SearchParamsHandler({ onParamsChange }: SearchParamsHandlerProps) {
   const searchParams = useSearchParams();
+  const prevParamsRef = useRef<string>("");
 
   useEffect(() => {
-    if (searchParams) {
+    if (searchParams.toString() !== prevParamsRef.current) {
       onParamsChange(searchParams);
+      prevParamsRef.current = searchParams.toString();
     }
   }, [searchParams, onParamsChange]);
 
