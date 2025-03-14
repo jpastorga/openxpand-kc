@@ -154,7 +154,7 @@ export default function Home() {
   return (
     <>
       <Suspense fallback={
-          <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-light z-50">
             <span className="text-xl font-roboto text-openxpand">Loading...</span>
           </div>
       }>
