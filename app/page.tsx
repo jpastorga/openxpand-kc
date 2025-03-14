@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from "react";
 import { scopeOptions, environments } from "./constants";
-import { FormData, FormDataWithCode } from "@/types/api";
+import { FormDataWithCode } from "@/types/api";
 import { Header, Footer, ApiCaller, StepWizard, LoginForm, SearchParamsHandler }  from "@/components";
 import { safeDecode } from "@/utils/safeDecode";
 import { generateAuthUrl } from "@/utils/url";
