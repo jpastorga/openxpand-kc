@@ -7,21 +7,20 @@ export const scopeOptions = [
 ];
 
 export const environments = {
-    sandbox: {
-      auth: 'https://opengw.dev.openxpand.com',
-      api: 'https://api.dev.openxpand.com/api/camara/sandbox',
-    },
     development: {
       auth: 'https://opengw.dev.openxpand.com',
       api: 'https://api.dev.openxpand.com/api/camara',
+      portal: 'https://developer.dev.openxpand.com/developer/es/:tenant',
     },
     testing: {
       auth: 'https://opengw.test.openxpand.com',
       api: 'https://api.test.openxpand.com/api/camara',
+      portal: 'https://developer.test.openxpand.com/developer/es/:tenant',
     },
     production: {
       auth: 'https://opengw.openxpand.com',
       api: 'https://api.openxpand.com/api/camara',
+      portal: 'https://developer.openxpand.com/developer/es/:tenant',
     },
   };
 

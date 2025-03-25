@@ -31,7 +31,7 @@ export const makeRequest = async (options: MakeRequestOptions) => {
 
       return await response.json();
     } catch (error) {
-      console.error("Error making request:", error);
+      //console.error("Error making request:", error);
       throw error;
     }
 };

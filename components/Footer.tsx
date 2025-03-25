@@ -1,11 +1,31 @@
+"use client";
+
 import Image from "next/image";
-export function Footer() {
+import { useEffect, useState } from "react";
+import { environments } from "@/app/constants";
+
+interface FooterProps {
+  env: string;
+  tenant: string;
+}
+
+export function Footer({ env, tenant }: FooterProps) {
+  const [urlPortal, setUrlPortal] = useState<string>("");
+
+  useEffect(() => {
+    const url = environments[env as keyof typeof environments]?.portal;
+    if (url && tenant) {
+      setUrlPortal(url.replace(":tenant", tenant));
+    }
+  }, [env, tenant]);
+
+  if (!urlPortal) return null;
 
   return (
     <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center my-4">
       <a
         className="flex items-center gap-2 hover:underline hover:underline-offset-4 text-openxpand"
-        href={"https://developer.openxpand.com"}
+        href={urlPortal}
         target="_blank"
         rel="noopener noreferrer"
       >

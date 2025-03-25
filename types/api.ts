@@ -1,8 +1,7 @@
 
 export interface ApiCallerProps {
     accessToken: string;
-    environment: string;
-    scope: string[];
+    env: FormData;
 }
 
 export interface MakeRequestOptions {
@@ -39,4 +38,10 @@ export interface FormData {
 export interface FormDataWithCode extends FormData {
     code: string | null;
     host: string;
+}
+
+export interface ApiErrorResponse {
+    status: string;
+    message: string;
+    code: string;
 }

@@ -2,7 +2,8 @@
 import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from "react";
 import { scopeOptions, environments } from "./constants";
 import { FormDataWithCode } from "@/types/api";
-import { Header, Footer, ApiCaller, StepWizard, LoginForm, SearchParamsHandler }  from "@/components";
+import { Header, Footer, StepWizard, LoginForm, SearchParamsHandler }  from "@/components";
+import { ApiCaller } from "@/components/ApiCaller";
 import { safeDecode } from "@/utils/safeDecode";
 import { generateAuthUrl } from "@/utils/url";
 import { usePersistentFormData } from "@/hook/usePersistentFormData";
@@ -14,7 +15,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [accessToken, setAccessToken] =  useState<string | null>(null);
   const [code, setCode] =  useState<string | null>(null);
-  const [selectedScope, setSelectedScope] = useState<string[]>([]);
+  //const [selectedScope, setSelectedScope] = useState<string[]>([]);
   const hasHandledCode = useRef(false);
 
   const formattedScopeOptions = useMemo(
@@ -31,7 +32,7 @@ export default function Home() {
     clientSecret: "",
     tenant: "",
     scope: [],
-    environment: "sandbox",
+    environment: "development",
   };
   
   const [formData, setFormData] = usePersistentFormData("openxpandFormData", initialFormData);
@@ -111,9 +112,9 @@ export default function Home() {
     async (code: string) => {
       setIsLoading(true);
       try {
-        const { environment, scope } = formData;
+        const { environment } = formData;
         const { auth } = environments[environment as keyof typeof environments];
-        setSelectedScope(scope);
+        //setSelectedScope(scope);
   
         const response = await fetch("/api/token", {
           method: "POST",
@@ -176,14 +177,14 @@ export default function Home() {
           <>
             <div className="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
               <h2 className="text-2xl font-roboto font-semibold mb-[5vh] text-center">Quick Tester</h2>
-              <ApiCaller accessToken={accessToken} environment={formData.environment} scope={selectedScope} />
+              <ApiCaller accessToken={accessToken} env={formData} />
               <StepWizard title={"How to implement this authorization code flow in your application"} env={formDataWithCode} />
             </div>
           </>
           )}
 
       </main>
-      <Footer />
+      <Footer env={formData.environment} tenant={formData.tenant} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { useApiRequest } from "@/hook/useApiRequest";
 import { apiList, environments } from "@/app/constants";
 
@@ -13,7 +13,8 @@ interface AccordionButtonProps {
   environment: string;
 }
 
-export default function AccordionButton({ onClick, isActive, name, path, label, description, accessToken, environment }: AccordionButtonProps) {
+function AccordionButton({ onClick, isActive, name, path, label, description, accessToken, environment }: AccordionButtonProps) {
+
   const initialInputs = apiList.reduce((acc: { [key: string]: string }, api) => {
     acc[api.name] = api.body;
     return acc;
@@ -22,12 +23,12 @@ export default function AccordionButton({ onClick, isActive, name, path, label, 
   const { loading, responses, inputs, setInputs, handleSubmit } = useApiRequest(accessToken, environment, initialInputs);
   const [curlCommand, setCurlCommand] = useState<string | null>(null);
   const [copyLabel, setCopyLabel] = useState("Copy as CURL");
-  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+
+  const handleInputChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputs((prev) => ({ ...prev, [name]: event.target.value }));
-  };
+  }, [setInputs, name]);
 
-
-  const generateCurlCommand = () => {
+  const generateCurlCommand = useCallback(() => {
     if (!accessToken || !path) return;
     setCopyLabel("Copied!");
     const requestData = inputs[name] ? `--data '${inputs[name]}'` : "";
@@ -48,7 +49,7 @@ export default function AccordionButton({ onClick, isActive, name, path, label, 
       setCurlCommand(null);
       setCopyLabel("Copy as CURL");
     }, 5000);
-  };
+  }, [accessToken, path, inputs, name, environment]);
 
   return (
     <>
@@ -132,3 +133,5 @@ export default function AccordionButton({ onClick, isActive, name, path, label, 
     </>
   );
 }
+
+export default memo(AccordionButton);

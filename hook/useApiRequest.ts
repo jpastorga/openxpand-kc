@@ -1,14 +1,10 @@
 import { useState } from "react";
 import { makeRequest } from "@/lib/api"; 
 import { environments } from "@/app/constants";
-
-interface ApiErrorResponse {
-    status: string;
-    message: string;
-    code: string;
-  }
+import { ApiErrorResponse } from "@/types/api";
+import { CustomError } from "@/utils/CustomError";
   
-export function useApiRequest(accessToken: string, apiUrl: string, initialInputs: { [key: string]: string }) {
+export function useApiRequest(accessToken: string, environment: string, initialInputs: { [key: string]: string }) {
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const [responses, setResponses] = useState<{ [key: string]: ApiErrorResponse | null }>({});
   const [inputs, setInputs] = useState(initialInputs);
@@ -29,7 +25,7 @@ export function useApiRequest(accessToken: string, apiUrl: string, initialInputs
     setResponses((prev) => ({ ...prev, [apiName]: null }));
 
     try {
-      const { api } = environments[apiUrl as keyof typeof environments];
+      const { api } = environments[environment as keyof typeof environments];
       const response = await makeRequest({
         method,
         url: `${api}/${path}`,
@@ -40,16 +36,27 @@ export function useApiRequest(accessToken: string, apiUrl: string, initialInputs
         },
       });
       setResponses((prev) => ({ ...prev, [apiName]: response }));
-    } catch (error) {
-      
-      setResponses((prev) => ({
-        ...prev,
-        [apiName]: {
-            status: `${(error as any)?.status || "unknown"}`,
-            message: `${(error as any)?.message || "unknown"}`,
-            code: `${(error as any)?.code || "unknown"}`,
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const customError = error as CustomError;
+        setResponses((prev) => ({
+          ...prev,
+          [apiName]: {
+            status: customError.status || "unknown",
+            message: customError.message || "unknown",
+            code: customError.code || "unknown",
           } as ApiErrorResponse,
-      }));
+        }));
+      } else {
+        setResponses((prev) => ({
+          ...prev,
+          [apiName]: {
+            status: "unknown",
+            message: "unknown",
+            code: "unknown",
+          } as ApiErrorResponse,
+        }));
+      }
     } finally {
       setLoading((prev) => ({ ...prev, [apiName]: false }));
     }
