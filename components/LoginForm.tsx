@@ -1,6 +1,7 @@
 import { environments } from "@/app/constants";
 import { ScopeSelector } from "./ScopeSelector";
 import { FormData } from "@/types/api";
+import { useEnvironmentStatuses } from "@/hook/useEnvironmentStatuses";
 
 interface LoginFormProps {
   formData: FormData;
@@ -13,6 +14,8 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ formData, handleSubmit, handleChange, handleScopeChange, isLoading, error, formattedScopeOptions }: LoginFormProps) {
+  const { statuses, loading: loadingStatuses } = useEnvironmentStatuses();
+
   return (
     <div className="bg-white text-openxpand p-10 rounded-2xl w-full sm:max-w-sm md:max-w-md">
       <h2 className="text-2xl font-roboto font-semibold mb-8">Quick Tester</h2>
@@ -34,12 +37,41 @@ export function LoginForm({ formData, handleSubmit, handleChange, handleScopeCha
 
         <div className="flex flex-col">
           <label htmlFor="environment" className="block text-md font-medium">Environment</label>
-          <select id="environment" name="environment" value={formData.environment} onChange={handleChange} required className="w-full mt-1 p-2 border rounded-md" disabled={isLoading}>
-            <option value="">-- Select an Environment --</option>
-            {Object.keys(environments).map((env) => (
-              <option key={env} value={env}>{env.charAt(0).toUpperCase() + env.slice(1)}</option>
-            ))}
-          </select>
+          <div className="relative">
+            <select
+              id="environment"
+              name="environment"
+              value={formData.environment}
+              onChange={handleChange}
+              required
+              className="w-full mt-1 p-2 border rounded-md pr-10 capitalize"
+              disabled={isLoading}
+            >
+              {Object.keys(environments).map((env) => {
+                const found = statuses.find((s) => s.env === env);
+                const label = found
+                  ? `${env} - ${found.version}`
+                  : loadingStatuses
+                  ? `${env} - Checking...`
+                  : `${env} - Error`;
+
+                return (
+                  <option key={env} value={env}>
+                    {label}
+                  </option>
+                );
+              })}
+            </select>
+
+            <div className="mt-1 mr-4 absolute top-1/2 right-3 transform -translate-y-1/2 w-4 h-4 rounded-full"
+              style={{
+                backgroundColor:
+                  statuses.find((s) => s.env === formData.environment)?.status === "healthy"
+                    ? "green"
+                    : "gray",
+              }}
+            />
+          </div>
         </div>
 
         <ScopeSelector formData={formData} handleScopeChange={handleScopeChange} formattedScopeOptions={formattedScopeOptions} isLoading={isLoading} />
