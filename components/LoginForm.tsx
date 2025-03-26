@@ -67,8 +67,8 @@ export function LoginForm({ formData, handleSubmit, handleChange, handleScopeCha
               style={{
                 backgroundColor:
                   statuses.find((s) => s.env === formData.environment)?.status === "healthy"
-                    ? "green"
-                    : "gray",
+                    ? "#3ba98c"
+                    : "#6c757d",
               }}
             />
           </div>
