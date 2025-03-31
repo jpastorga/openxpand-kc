@@ -106,6 +106,26 @@ export const apiList = [
       description: "Checks if SIM swap has been performed during a past period of time.",
       usecase: 'simSwap',
       scope: 'dpv:FraudPreventionAndDetection#sim-swap',
+    },
+    {
+      name: "kycMatch",
+      title: 'Know Your Customer Match',
+      path: "kyc-match/v0.2/check",
+      body: '{"phoneNumber": "543462641443"}',
+      displayName: "KYC Match",
+      description: "Checks if a customer is a known customer.",
+      usecase: 'kycMatch',
+      scope: 'dpv:FraudPreventionAndDetection#kyc-match',
+    },
+    {
+      name: "kycFillIn",
+      title: 'Know Your Customer Fill In',
+      path: "/kyc-fill-in/v0.2/fill-in",
+      body: '{"phoneNumber": "543462641443"}',
+      displayName: "KYC Fill In",
+      description: "Fills in KYC data for a customer.",
+      usecase: 'kycFillIn',
+      scope: 'dpv:FraudPreventionAndDetection#kyc-fill-in',
     }
   ];
 
