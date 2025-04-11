@@ -3,7 +3,8 @@ export const scopeOptions = [
     'dpv:FraudPreventionAndDetection#location-verification',
     'dpv:FraudPreventionAndDetection#location-retrieval',
     'dpv:FraudPreventionAndDetection#number-verification',
-    'dpv:FraudPreventionAndDetection#sim-swap'
+    'dpv:FraudPreventionAndDetection#sim-swap',
+    'dpv:FraudPreventionAndDetection#kyc-match',
 ];
 
 export const environments = {
@@ -106,6 +107,16 @@ export const apiList = [
       description: "Checks if SIM swap has been performed during a past period of time.",
       usecase: 'simSwap',
       scope: 'dpv:FraudPreventionAndDetection#sim-swap',
+    },
+    {
+      name: "kycMatchv0.3",
+      title: 'KYC Match v0.3',
+      path: "kyc-match/v0.3/match",
+      body: '{"phoneNumber": "+34629255833","idDocument": "66666666q","name": "Federica Sanchez Arjona","givenName": "Federica","familyName": "Sanchez Arjona","nameKanaHankaku": "federica","nameKanaZenkaku": "Ｆｅｄｅｒｉｃａ","middleNames": "Sanchez","familyNameAtBirth": "YYYY","address": "Tokyo-to Chiyoda-ku Iidabashi 3-10-10","streetName": "Nicolas Salmeron","streetNumber": "4","postalCode": "1028460","region": "Tokyo","locality": "ZZZZ","country": "JP","houseNumberExtension": "VVVV","birthdate": "1978-08-22","email": "abc@example.com","gender": "OTHER"}',
+      displayName: "Know Your Customer Match",
+      description: "Know Your Customer Match",
+      usecase: 'kycMatch',
+      scope: 'dpv:FraudPreventionAndDetection#kyc-match',
     }
   ];
 
