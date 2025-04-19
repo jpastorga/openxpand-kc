@@ -2,11 +2,11 @@ import type { NextConfig } from "next";
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline' 'unsafe-eval';
+  script-src 'self';
   style-src 'self' 'unsafe-inline';
-  img-src * data: blob:;
+  img-src 'self' data:;
   font-src 'self';
-  connect-src 'self';
+  connect-src 'self' https://api.dev.openxpand.com https://api.test.openxpand.com https://api.openxpand.com;
   object-src 'none';
   frame-ancestors 'none';
 `;
