@@ -5,6 +5,8 @@ export const scopeOptions = [
     'dpv:FraudPreventionAndDetection#number-verification',
     'dpv:FraudPreventionAndDetection#sim-swap',
     'dpv:FraudPreventionAndDetection#kyc-match',
+    'dpv:FraudPreventionAndDetection#device-swap',
+    'dpv:FraudPreventionAndDetection#quality-on-demand',
 ];
 
 export const environments = {
@@ -117,6 +119,26 @@ export const apiList = [
       description: "Know Your Customer Match",
       usecase: 'kycMatch',
       scope: 'dpv:FraudPreventionAndDetection#kyc-match',
+    },
+    {
+      name: "qualityOnDemandSession",
+      title: 'Quality On Demand',
+      path: 'quality-on-demand/v1/sessions',
+      body: '{"device": {"phoneNumber": "+123456789","networkAccessIdentifier": "123456789@domain.com","ipv4Address": {"publicAddress": "203.0.113.0","publicPort": 59765},"ipv6Address": "2001:db8:85a3:8d3:1319:8a2e:370:7344"  },  "applicationServer": {    "ipv4Address": "198.51.100.0/24",    "ipv6Address": "2001:db8:85a3:8d3:1319:8a2e:370:7344"  },  "devicePorts": {    "ranges": [{"from": 5010,        "to": 5020      }],    "ports": [      5060,5070]},"applicationServerPorts": {"ranges": [{"from": 5010,"to": 5020}],"ports": [5060,5070]},"qosProfile": "voice","sink": "https://endpoint.example.com/sink","sinkCredential": {"credentialType": "PLAIN"},"duration": 3600}',
+      displayName: "Session",
+      description: "Quality On Demand Session",
+      usecase: 'qualityOnDemand',
+      scope: 'dpv:FraudPreventionAndDetection#quality-on-demand',
+    },
+    {
+      name: "qualityOnDemandRetrieveSession",
+      title: 'Quality On Demand',
+      path: 'quality-on-demand/v1/retrieve-sessions',
+      body: '{"device": {"phoneNumber": "+123456789","networkAccessIdentifier": "123456789@domain.com","ipv4Address": {"publicAddress": "203.0.113.0","publicPort": 59765},"ipv6Address": "2001:db8:85a3:8d3:1319:8a2e:370:7344"}}',
+      displayName: "Retrieve",
+      description: "Quality On Demand Retrieve Session",
+      usecase: 'qualityOnDemand',
+      scope: 'dpv:FraudPreventionAndDetection#quality-on-demand',
     }
   ];
 
