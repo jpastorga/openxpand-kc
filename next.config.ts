@@ -25,10 +25,10 @@ const ContentSecurityPolicy = `
 `;
 
 const securityHeaders = [
-  {
+  /*{
     key: "Strict-Transport-Security",
     value: "max-age=31536000; includeSubDomains; preload"
-  },
+  },*/
   {
     key: "Content-Security-Policy",
     value: ContentSecurityPolicy.replace(/\n/g, "").trim()
