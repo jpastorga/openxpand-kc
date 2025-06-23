@@ -7,6 +7,7 @@ export const scopeOptions = [
     'dpv:FraudPreventionAndDetection#kyc-match',
     'dpv:FraudPreventionAndDetection#device-swap',
     'dpv:FraudPreventionAndDetection#quality-on-demand',
+    'dpv:FraudPreventionAndDetection#carrier-lookup',
 ];
 
 export const environments = {
@@ -159,7 +160,17 @@ export const apiList = [
       description: "Quality On Demand Retrieve Session",
       usecase: 'qualityOnDemand',
       scope: 'dpv:FraudPreventionAndDetection#quality-on-demand',
-    }
+    },
+    {
+      name: 'carrierLookup',
+      title: 'Carrier Lookup',
+      path: 'carrier-lookup/v0/retrieve',
+      body: '{"phoneNumber": "543462641443"}',
+      displayName: 'Carrier Lookup',
+      description: 'Retrieve the carrier of a phone number.',
+      usecase: 'carrierLookup',
+      scope: 'dpv:FraudPreventionAndDetection#carrier-lookup',
+    },
   ];
 
 export const steps = [
