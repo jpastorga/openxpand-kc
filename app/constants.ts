@@ -7,13 +7,13 @@ export const scopeOptions = [
     'dpv:FraudPreventionAndDetection#kyc-match',
     'dpv:FraudPreventionAndDetection#device-swap',
     'dpv:FraudPreventionAndDetection#quality-on-demand',
-    'dpv:FraudPreventionAndDetection#carrier-lookup',
 ];
 
 export const environments = {
     development: {
       auth: 'https://opengw.dev.openxpand.com',
       api: 'https://api.dev.openxpand.com/api/camara',
+      //api: 'http://localhost:9091/api/camara',
       portal: 'https://developer.dev.openxpand.com/developer/es/:tenant',
     },
     testing: {
@@ -115,7 +115,7 @@ export const apiList = [
       name: "kycMatchv0.3",
       title: 'KYC Match v0.3',
       path: "kyc-match/v0.3/match",
-      body: '{"phoneNumber": "+34629255833","idDocument": "66666666q","name": "Federica Sanchez Arjona","givenName": "Federica","familyName": "Sanchez Arjona","nameKanaHankaku": "federica","nameKanaZenkaku": "Ｆｅｄｅｒｉｃａ","middleNames": "Sanchez","familyNameAtBirth": "YYYY","address": "Tokyo-to Chiyoda-ku Iidabashi 3-10-10","streetName": "Nicolas Salmeron","streetNumber": "4","postalCode": "1028460","region": "Tokyo","locality": "ZZZZ","country": "JP","houseNumberExtension": "VVVV","birthdate": "1978-08-22","email": "abc@example.com","gender": "OTHER"}',
+      body: ' {"phoneNumber":"1179460958","idDocument":"UK123456TUR","name":"Alan Turing","givenName":"Alan","familyName":"Turing","nameKanaHankaku":null,"nameKanaZenkaku":null,"middleNames":null,"familyNameAtBirth":null,"address":"78 High Street","streetName":"High Street","streetNumber":"78","postalCode":"OX13QD","region":"Oxfordshire","locality":"Oxford","country":"GB","houseNumberExtension":"2nd floor Oxford Centre","birthdate":"1912-06-23","email":"alan.turing@historymail.com","gender":"Masculino","floor":"2nd floor","departament":"Oxford Centre"}',
       displayName: "Know Your Customer Match",
       description: "Know Your Customer Match",
       usecase: 'kycMatch',
@@ -160,26 +160,6 @@ export const apiList = [
       description: "Quality On Demand Retrieve Session",
       usecase: 'qualityOnDemand',
       scope: 'dpv:FraudPreventionAndDetection#quality-on-demand',
-    },
-    {
-      name: 'carrierLookup',
-      title: 'Carrier Lookup',
-      path: 'carrier-lookup/v0/retrieve',
-      body: '{"phoneNumber": "541141833024"}',
-      displayName: 'Carrier Lookup',
-      description: 'Retrieve the carrier of a phone number.',
-      usecase: 'carrierLookup',
-      scope: 'dpv:FraudPreventionAndDetection#carrier-lookup',
-    },
-    {
-      name: 'carrierLookupv2',
-      title: 'Carrier Lookup v2',
-      path: 'carrier-lookup/v1/retrieve',
-      body: '{"phoneNumber": "541141833024"}',
-      displayName: 'Carrier Lookup v2',
-      description: 'Retrieve the carrier of a phone number By carrier lookup v2.',
-      usecase: 'carrierLookup',
-      scope: 'dpv:FraudPreventionAndDetection#carrier-lookup',
     },
   ];
 
