@@ -8,6 +8,7 @@ export const scopeOptions = [
     'dpv:FraudPreventionAndDetection#kyc-fill-in',
     'dpv:FraudPreventionAndDetection#device-swap',
     'dpv:FraudPreventionAndDetection#quality-on-demand',
+    'dpv:FraudPreventionAndDetection#qos-provisioning',
 ];
 
 export const environments = {
@@ -171,6 +172,38 @@ export const apiList = [
       description: "Quality On Demand Retrieve Session",
       usecase: 'qualityOnDemand',
       scope: 'dpv:FraudPreventionAndDetection#quality-on-demand',
+    },
+    {
+      name: "qosProvisioningCreate",
+      title: 'QoS Provisioning',
+      path: 'qos-provisioning/v1/qos-assignments',
+      body: '{"device": {"phoneNumber": "+123456789","networkAccessIdentifier": "123456789@domain.com","ipv4Address": {"publicAddress": "203.0.113.0","publicPort": 59765},"ipv6Address": "2001:db8:85a3:8d3:1319:8a2e:370:7344"},"qosProfile": "QCI_1_voice","sink": "https://endpoint.example.com/sink","sinkCredential": {}}',
+      displayName: "Create QoS Assignment",
+      description: "Create a new QoS assignment",
+      usecase: 'qosProvisioning',
+      scope: 'dpv:FraudPreventionAndDetection#qos-provisioning',
+    },
+    {
+      name: "qosProvisioningRetrieve",
+      title: 'QoS Provisioning',
+      path: 'qos-provisioning/v1/qos-assignments/{sessionId}',
+      body: '',
+      method: 'GET',
+      displayName: "Retrieve QoS Assignment",
+      description: "Retrieve a QoS assignment by ID",
+      usecase: 'qosProvisioning',
+      scope: 'dpv:FraudPreventionAndDetection#qos-provisioning',
+    },
+    {
+      name: "qosProvisioningDelete",
+      title: 'QoS Provisioning',
+      path: 'qos-provisioning/v1/qos-assignments/{sessionId}',
+      body: '',
+      method: 'DELETE',
+      displayName: "Delete QoS Assignment",
+      description: "Delete a QoS assignment by ID",
+      usecase: 'qosProvisioning',
+      scope: 'dpv:FraudPreventionAndDetection#qos-provisioning',
     },
   ];
 

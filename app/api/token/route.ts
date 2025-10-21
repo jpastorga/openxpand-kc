@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { http2Fetch } from "@/lib/http2-client";
 
 interface TokenRequestBody {
   code: string;
@@ -15,7 +16,7 @@ export async function POST(req: NextRequest) {
     const { code, redirect_uri, client_id, client_secret, auth_url, tenant } = requestBody;
     const tokenUrl = `${auth_url}/auth/realms/${tenant}/protocol/openid-connect/token`;
 
-    const response = await fetch(tokenUrl, {
+    const response = await http2Fetch(tokenUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

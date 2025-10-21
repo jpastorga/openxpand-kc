@@ -1,6 +1,7 @@
-import { useState, memo, useCallback } from "react";
+import { useState, memo, useCallback, useMemo } from "react";
 import { useApiRequest } from "@/hook/useApiRequest";
 import { apiList, environments } from "@/app/constants";
+import { generateUUID } from "@/utils/uuid";
 
 interface AccordionButtonProps {
   onClick: () => void;
@@ -23,16 +24,24 @@ function AccordionButton({ onClick, isActive, name, path, label, description, ac
   const { loading, responses, inputs, setInputs, handleSubmit } = useApiRequest(accessToken, environment, initialInputs);
   const [curlCommand, setCurlCommand] = useState<string | null>(null);
   const [copyLabel, setCopyLabel] = useState("Copy as CURL");
+  const [sessionId] = useState(generateUUID());
+
+  const currentApi = useMemo(() => apiList.find((api) => api.name === name), [name]);
+  const method = currentApi?.method || "POST";
+
+  const actualPath = useMemo(() => {
+    return path.replace(/{sessionId}/g, sessionId);
+  }, [path, sessionId]);
 
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputs((prev) => ({ ...prev, [name]: event.target.value }));
   }, [setInputs, name]);
 
   const generateCurlCommand = useCallback(() => {
-    if (!accessToken || !path) return;
+    if (!accessToken || !actualPath) return;
     setCopyLabel("Copied!");
-    const requestData = inputs[name] ? `--data '${inputs[name]}'` : "";
-    const fullCurl = `curl -X POST "${environments[environment as keyof typeof environments].api}/${path}" -H "Authorization: Bearer ${accessToken}" -H "Content-Type: application/json" ${requestData}`;
+    const requestData = inputs[name] && method !== "GET" && method !== "DELETE" ? `--data '${inputs[name]}'` : "";
+    const fullCurl = `curl -X ${method} "${environments[environment as keyof typeof environments].api}/${actualPath}" -H "Authorization: Bearer ${accessToken}" -H "Content-Type: application/json" ${requestData}`;
 
 
     navigator.clipboard.writeText(fullCurl).then(() => {
@@ -41,7 +50,7 @@ function AccordionButton({ onClick, isActive, name, path, label, description, ac
 
     const truncatedAccessToken =
       accessToken.substring(0, 6) + "..." + accessToken.slice(-4);
-    const truncatedCurl = `curl -X POST "${environments[environment as keyof typeof environments].api}/${path}" -H "Authorization: Bearer ${truncatedAccessToken}" -H "Content-Type: application/json" ${requestData}`;
+    const truncatedCurl = `curl -X ${method} "${environments[environment as keyof typeof environments].api}/${actualPath}" -H "Authorization: Bearer ${truncatedAccessToken}" -H "Content-Type: application/json" ${requestData}`;
 
     setCurlCommand(truncatedCurl);
 
@@ -49,7 +58,7 @@ function AccordionButton({ onClick, isActive, name, path, label, description, ac
       setCurlCommand(null);
       setCopyLabel("Copy as CURL");
     }, 5000);
-  }, [accessToken, path, inputs, name, environment]);
+  }, [accessToken, actualPath, inputs, name, environment, method]);
 
   return (
     <>
@@ -85,7 +94,7 @@ function AccordionButton({ onClick, isActive, name, path, label, description, ac
           <div className="flex items-center justify-center gap-2 mt-2">
             <button
               onClick={() => {
-                handleSubmit(name, path);
+                handleSubmit(name, actualPath, method);
                 setCurlCommand(null);
               }}
               className="text-white px-6 py-2 rounded-md hover:opacity-80 transition flex items-center justify-center"

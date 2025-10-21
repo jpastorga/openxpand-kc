@@ -25,6 +25,8 @@ export interface ApiItem {
     scope: string;
     title: string;
     usecase: string;
+    body?: string;
+    method?: string;
 }
 
 export interface FormData {

@@ -1,5 +1,6 @@
 import { MakeRequestOptions } from "@/types/api";
 import { CustomError } from "@/utils/CustomError";
+import { http2Fetch } from "./http2-client";
 
 
 export const makeRequest = async (options: MakeRequestOptions) => {
@@ -22,7 +23,7 @@ export const makeRequest = async (options: MakeRequestOptions) => {
         }
       }
 
-      const response = await fetch(url + queryString, config);
+      const response = await http2Fetch(url + queryString, config);
   
       if (!response.ok) {
         const errorData = await response.json();
