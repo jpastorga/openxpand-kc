@@ -176,8 +176,8 @@ export const apiList = [
     {
       name: "qosProvisioningCreate",
       title: 'QoS Provisioning',
-      path: 'qos-provisioning/v1/qos-assignments',
-      body: '{"device": {"phoneNumber": "+123456789","networkAccessIdentifier": "123456789@domain.com","ipv4Address": {"publicAddress": "203.0.113.0","publicPort": 59765},"ipv6Address": "2001:db8:85a3:8d3:1319:8a2e:370:7344"},"qosProfile": "QCI_1_voice","sink": "https://endpoint.example.com/sink","sinkCredential": {}}',
+      path: 'qos-provisioning/v0.3/qos-assignments',
+      body: '{"device": { "phoneNumber": "+541130124057"},"qosProfile": "prorizacion_api_qod"}',
       displayName: "Create QoS Assignment",
       description: "Create a new QoS assignment",
       usecase: 'qosProvisioning',
@@ -186,10 +186,10 @@ export const apiList = [
     {
       name: "qosProvisioningRetrieve",
       title: 'QoS Provisioning',
-      path: 'qos-provisioning/v1/qos-assignments/{sessionId}',
+      path: 'qos-provisioning/v0.3/qos-assignments/{sessionId}',
       body: '',
       method: 'GET',
-      displayName: "Retrieve QoS Assignment",
+      displayName: "Get QoS Assignment",
       description: "Retrieve a QoS assignment by ID",
       usecase: 'qosProvisioning',
       scope: 'dpv:FraudPreventionAndDetection#qos-provisioning',
@@ -197,7 +197,7 @@ export const apiList = [
     {
       name: "qosProvisioningDelete",
       title: 'QoS Provisioning',
-      path: 'qos-provisioning/v1/qos-assignments/{sessionId}',
+      path: 'qos-provisioning/v0.3/qos-assignments/{sessionId}',
       body: '',
       method: 'DELETE',
       displayName: "Delete QoS Assignment",
@@ -208,8 +208,8 @@ export const apiList = [
     {
       name: "qosProvisioningRetrieveAssignment",
       title: 'QoS Provisioning',
-      path: 'telecom/qos-provisioning/v1/retrieve-qos-assignment',
-      body: '{"device": {"phoneNumber": "+541130124057","networkAccessIdentifier": "123456789@domain.com","ipv4Address": {"publicAddress": "203.0.113.0","publicPort": 59765},"ipv6Address": "2001:db8:85a3:8d3:1319:8a2e:370:7344"}}',
+      path: 'telecom/qos-provisioning/v0.3/retrieve-qos-assignment',
+      body: '{"device": {"phoneNumber": "+541130124057"}}',
       displayName: "Retrieve QoS Assignment",
       description: "Retrieve QoS assignment for a device",
       usecase: 'qosProvisioning',
