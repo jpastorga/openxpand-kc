@@ -205,6 +205,16 @@ export const apiList = [
       usecase: 'qosProvisioning',
       scope: 'dpv:FraudPreventionAndDetection#qos-provisioning',
     },
+    {
+      name: "qosProvisioningRetrieveAssignment",
+      title: 'QoS Provisioning',
+      path: 'telecom/qos-provisioning/v1/retrieve-qos-assignment',
+      body: '{"device": {"phoneNumber": "+541130124057","networkAccessIdentifier": "123456789@domain.com","ipv4Address": {"publicAddress": "203.0.113.0","publicPort": 59765},"ipv6Address": "2001:db8:85a3:8d3:1319:8a2e:370:7344"}}',
+      displayName: "Retrieve QoS Assignment",
+      description: "Retrieve QoS assignment for a device",
+      usecase: 'qosProvisioning',
+      scope: 'dpv:FraudPreventionAndDetection#qos-provisioning',
+    },
   ];
 
 export const steps = [
