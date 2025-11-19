@@ -64,7 +64,7 @@ function AccordionButton({
         }
       }
     } catch {
-      console.error("Error beautifying JSON:", error);
+      console.error("Error beautifying JSON");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
