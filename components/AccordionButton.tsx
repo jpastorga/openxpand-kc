@@ -1,4 +1,4 @@
-import { useState, memo, useCallback, useMemo } from "react";
+import { useState, memo, useCallback, useMemo, useEffect } from "react";
 import { apiList, environments } from "@/app/constants";
 import { ApiErrorResponse } from "@/types/api";
 
@@ -52,6 +52,22 @@ function AccordionButton({
 
     return updatedPath;
   }, [path, assignmentId, name]);
+
+  useEffect(() => {
+    try {
+      const currentInput = inputs[name] || "";
+      if (currentInput && currentInput.trim()) {
+        const parsed = JSON.parse(currentInput);
+        const beautified = JSON.stringify(parsed, null, 2);
+        if (currentInput !== beautified) {
+          setInputs((prev) => ({ ...prev, [name]: beautified }));
+        }
+      }
+    } catch {
+      console.error("Error beautifying JSON:", error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name]);
 
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputs((prev) => ({ ...prev, [name]: event.target.value }));
@@ -108,7 +124,7 @@ function AccordionButton({
             value={inputs[name] || ""}
             onChange={handleInputChange}
             className="font-mono text-openxpand text-sm w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows={2}
+            rows={6}
           ></textarea>
 
           <div className="flex items-center justify-center gap-2 mt-2">
@@ -147,12 +163,12 @@ function AccordionButton({
           </div>
 
           {curlCommand ? (
-            <pre className="whitespace-pre-wrap break-words font-mono bg-gray-900 text-white p-2 rounded-md mt-2 text-xs">
+            <pre className="whitespace-pre-wrap break-words font-mono bg-gray-900 text-white p-2 rounded-md mt-2 text-sm">
               {curlCommand}
             </pre>
           ) : (
             responses[name] && (
-              <pre className="font-mono text-openxpand bg-white p-2 rounded-md mt-2 text-xs">
+              <pre className="whitespace-pre-wrap break-words font-mono text-openxpand bg-white p-2 rounded-md mt-2 text-sm border">
                 {JSON.stringify(responses[name], null, 2)}
               </pre>
             )

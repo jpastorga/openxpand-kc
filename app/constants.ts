@@ -117,7 +117,7 @@ export const apiList = [
       name: "kycMatchv0.3",
       title: 'KYC Match v0.3',
       path: "kyc-match/v0.3/match",
-      body: '{"phoneNumber":"1111110068","idDocument":"23780766","name":"Javier Ampudia De Vera","givenName":"Javier","familyName":"Ampudia De Vera","nameKanaHankaku":null,"nameKanaZenkaku":null,"middleNames":null,"familyNameAtBirth":null,"address":"MITRE 705","streetName":"MITRE","streetNumber":"705","postalCode":"8000","region":"","locality":"","country":"Argentina","houseNumberExtension":"","birthdate":"1974-01-12","email":"autogestion@gmail.com","gender":"Masculino","floor":"","departament":""}',
+      body: '{"phoneNumber":"1111110068","idDocument":"23780766","name":"Javier Ampudia De Vera","givenName":"Javier","familyName":"Ampudia De Vera","nameKanaHankaku":null,"nameKanaZenkaku":null,"middleNames":null,"familyNameAtBirth":null,"address":"MITRE 705","streetName":"MITRE","streetNumber":"705","postalCode":"8000","region":"","locality":"","country":"AR","houseNumberExtension":"","birthdate":"1974-01-12","email":"autogestion@gmail.com","gender":"MALE","floor":"","departament":""}',
       displayName: "Know Your Customer Match",
       description: "Know Your Customer Match",
       usecase: 'kycMatch',
