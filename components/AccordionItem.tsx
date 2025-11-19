@@ -1,20 +1,32 @@
 import { memo, useState } from "react";
 import AccordionButton from "@/components/AccordionButton";
-import { ApiItem } from "@/types/api";
+import { ApiItem, ApiErrorResponse } from "@/types/api";
 
 interface AccordionItemProps {
   api: ApiItem;
   accessToken: string;
   environment: string;
+  loading: { [key: string]: boolean };
+  responses: { [key: string]: ApiErrorResponse | null };
+  inputs: { [key: string]: string };
+  setInputs: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+  handleSubmit: (apiName: string, path: string, method?: string) => Promise<void>;
+  assignmentId: string | null;
 }
 
 const AccordionItem = ({
-  api, 
-  accessToken, 
-  environment 
+  api,
+  accessToken,
+  environment,
+  loading,
+  responses,
+  inputs,
+  setInputs,
+  handleSubmit,
+  assignmentId
 }: AccordionItemProps) => {
   const [isActive, setIsActive] = useState(false);
-  
+
   const handleClick = () => {
     setIsActive((prev) => !prev);
   };
@@ -30,6 +42,12 @@ const AccordionItem = ({
         description={api.description}
         accessToken={accessToken}
         environment={environment}
+        loading={loading}
+        responses={responses}
+        inputs={inputs}
+        setInputs={setInputs}
+        handleSubmit={handleSubmit}
+        assignmentId={assignmentId}
       />
     </div>
   );

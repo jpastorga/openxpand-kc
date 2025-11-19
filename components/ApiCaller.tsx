@@ -2,10 +2,18 @@ import { apiList } from "@/app/constants";
 import { ApiCallerProps, ApiItem } from "@/types/api";
 import { useMemo, useState } from "react";
 import AccordionItem from "@/components/AccordionItem";
+import { useApiRequest } from "@/hook/useApiRequest";
 
 export function ApiCaller({ accessToken, env }: ApiCallerProps) {
-    
+
   const [sandboxMode, setSandboxMode] = useState(true);
+
+  const initialInputs = apiList.reduce((acc: { [key: string]: string }, api) => {
+    acc[api.name] = api.body;
+    return acc;
+  }, {});
+
+  const { loading, responses, inputs, setInputs, handleSubmit, assignmentId } = useApiRequest(accessToken, env.environment, initialInputs);
 
   const groupedApis = useMemo(() => {
       return apiList.reduce((acc: Record<string, ApiItem[]>, api) => {
@@ -54,6 +62,12 @@ export function ApiCaller({ accessToken, env }: ApiCallerProps) {
                          api={api}
                          accessToken={accessToken}
                          environment={env.environment}
+                         loading={loading}
+                         responses={responses}
+                         inputs={inputs}
+                         setInputs={setInputs}
+                         handleSubmit={handleSubmit}
+                         assignmentId={assignmentId}
                        />
                     ))}
                 </div>

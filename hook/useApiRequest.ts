@@ -8,6 +8,7 @@ export function useApiRequest(accessToken: string, environment: string, initialI
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const [responses, setResponses] = useState<{ [key: string]: ApiErrorResponse | null }>({});
   const [inputs, setInputs] = useState(initialInputs);
+  const [assignmentId, setAssignmentId] = useState<string | null>(null);
 
 
   const handleSubmit = async (apiName: string, path: string, method = "POST") => {
@@ -36,6 +37,9 @@ export function useApiRequest(accessToken: string, environment: string, initialI
         },
       });
       setResponses((prev) => ({ ...prev, [apiName]: response }));
+      if (apiName === 'qosProvisioningCreate' && response?.assignmentId) {
+        setAssignmentId(response.assignmentId);
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         const customError = error as CustomError;
@@ -62,5 +66,5 @@ export function useApiRequest(accessToken: string, environment: string, initialI
     }
   };
 
-  return { loading, responses, inputs, setInputs, handleSubmit };
+  return { loading, responses, inputs, setInputs, handleSubmit, assignmentId };
 }

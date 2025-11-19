@@ -186,7 +186,7 @@ export const apiList = [
     {
       name: "qosProvisioningRetrieve",
       title: 'QoS Provisioning',
-      path: 'qos-provisioning/v0.3/qos-assignments/{sessionId}',
+      path: 'qos-provisioning/v0.3/qos-assignments/{assignmentId}',
       body: '',
       method: 'GET',
       displayName: "Get QoS Assignment",
@@ -197,7 +197,7 @@ export const apiList = [
     {
       name: "qosProvisioningDelete",
       title: 'QoS Provisioning',
-      path: 'qos-provisioning/v0.3/qos-assignments/{sessionId}',
+      path: 'qos-provisioning/v0.3/qos-assignments/{assignmentId}',
       body: '',
       method: 'DELETE',
       displayName: "Delete QoS Assignment",

@@ -1,7 +1,6 @@
 import { useState, memo, useCallback, useMemo } from "react";
-import { useApiRequest } from "@/hook/useApiRequest";
 import { apiList, environments } from "@/app/constants";
-import { generateUUID } from "@/utils/uuid";
+import { ApiErrorResponse } from "@/types/api";
 
 interface AccordionButtonProps {
   onClick: () => void;
@@ -12,26 +11,47 @@ interface AccordionButtonProps {
   description: string;
   accessToken: string;
   environment: string;
+  loading: { [key: string]: boolean };
+  responses: { [key: string]: ApiErrorResponse | null };
+  inputs: { [key: string]: string };
+  setInputs: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+  handleSubmit: (apiName: string, path: string, method?: string) => Promise<void>;
+  assignmentId: string | null;
 }
 
-function AccordionButton({ onClick, isActive, name, path, label, description, accessToken, environment }: AccordionButtonProps) {
+function AccordionButton({
+  onClick,
+  isActive,
+  name,
+  path,
+  label,
+  description,
+  accessToken,
+  environment,
+  loading,
+  responses,
+  inputs,
+  setInputs,
+  handleSubmit,
+  assignmentId
+}: AccordionButtonProps) {
 
-  const initialInputs = apiList.reduce((acc: { [key: string]: string }, api) => {
-    acc[api.name] = api.body;
-    return acc;
-  }, {});
-
-  const { loading, responses, inputs, setInputs, handleSubmit } = useApiRequest(accessToken, environment, initialInputs);
   const [curlCommand, setCurlCommand] = useState<string | null>(null);
   const [copyLabel, setCopyLabel] = useState("Copy as CURL");
-  const [sessionId] = useState(generateUUID());
 
   const currentApi = useMemo(() => apiList.find((api) => api.name === name), [name]);
   const method = currentApi?.method || "POST";
 
   const actualPath = useMemo(() => {
-    return path.replace(/{sessionId}/g, sessionId);
-  }, [path, sessionId]);
+
+    let updatedPath = path;
+
+    if (assignmentId) {
+      updatedPath = updatedPath.replace(/{assignmentId}/g, assignmentId);
+    }
+
+    return updatedPath;
+  }, [path, assignmentId, name]);
 
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputs((prev) => ({ ...prev, [name]: event.target.value }));
