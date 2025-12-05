@@ -216,6 +216,16 @@ export const apiList = [
       usecase: 'qosProvisioning',
       scope: 'dpv:FraudPreventionAndDetection#qos-provisioning',
     },
+    {
+      name: "carrierLookup",
+      title: 'Carrier Lookup',
+      path: 'carrier-lookup/v1/retrieve',
+      body: '{"phoneNumber": "543872699999"}',
+      displayName: "Retrieve Carrier",
+      description: "Retrieve carrier information for a phone number",
+      usecase: 'carrierLookup',
+      scope: 'dpv:FraudPreventionAndDetection#carrier-lookup',
+    },
   ];
 
 export const steps = [
