@@ -9,6 +9,7 @@ export const scopeOptions = [
     'dpv:FraudPreventionAndDetection#device-swap',
     'dpv:FraudPreventionAndDetection#quality-on-demand',
     'dpv:FraudPreventionAndDetection#qos-provisioning',
+    'dpv:FraudPreventionAndDetection#carrier-lookup'
 ];
 
 export const environments = {
