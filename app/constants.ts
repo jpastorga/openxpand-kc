@@ -6,6 +6,7 @@ export const scopeOptions = [
     'dpv:FraudPreventionAndDetection#sim-swap',
     'dpv:FraudPreventionAndDetection#kyc-match',
     'dpv:FraudPreventionAndDetection#kyc-fill-in',
+    'dpv:FraudPreventionAndDetection#kyc-tenure',
     'dpv:FraudPreventionAndDetection#device-swap',
     'dpv:FraudPreventionAndDetection#quality-on-demand',
     'dpv:FraudPreventionAndDetection#qos-provisioning',
