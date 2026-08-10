@@ -136,6 +136,16 @@ export const apiList = [
       scope: 'dpv:FraudPreventionAndDetection#kyc-fill-in',
     },
     {
+      name: "kycTenure",
+      title: 'KYC Tenure',
+      path: "kyc-tenure/v0.2/check-tenure",
+      body: '{"phoneNumber": "+543462641442", "tenureDate": "2025-01-01"}',
+      displayName: "Check Tenure",
+      description: "Checks whether the subscriber relationship existed on the specified date.",
+      usecase: 'kycTenure',
+      scope: 'dpv:FraudPreventionAndDetection#kyc-tenure',
+    },
+    {
       name: "deviceSwapRetrieve",
       title: 'Device Swap',
       path: 'device-swap/v0.2/retrieve-date',
