@@ -13,11 +13,11 @@ export function ApiCaller({ accessToken, env }: ApiCallerProps) {
     return acc;
   }, {});
 
-  const { loading, responses, inputs, setInputs, handleSubmit, assignmentId } = useApiRequest(accessToken, env.environment, initialInputs);
+  const { loading, responses, inputs, setInputs, handleSubmit, pathIds } = useApiRequest(accessToken, env.environment, initialInputs);
 
   const groupedApis = useMemo(() => {
       return apiList.reduce((acc: Record<string, ApiItem[]>, api) => {
-        if (env.scope.includes(api.scope)) {
+        if ((env.selectedVersions ?? []).includes(api.versionId)) {
           if (!acc[api.usecase]) acc[api.usecase] = [];
           const updatedApi = {
             ...api,
@@ -27,7 +27,7 @@ export function ApiCaller({ accessToken, env }: ApiCallerProps) {
         }
         return acc;
       }, {} as Record<string, ApiItem[]>);
-    }, [env.scope, sandboxMode]);
+    }, [env.selectedVersions, sandboxMode]);
 
   return (
     <>
@@ -67,7 +67,7 @@ export function ApiCaller({ accessToken, env }: ApiCallerProps) {
                          inputs={inputs}
                          setInputs={setInputs}
                          handleSubmit={handleSubmit}
-                         assignmentId={assignmentId}
+                         pathIds={pathIds}
                        />
                     ))}
                 </div>

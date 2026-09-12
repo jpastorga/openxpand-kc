@@ -14,23 +14,27 @@ export const makeRequest = async (options: MakeRequestOptions) => {
           "Content-Type": "application/json",
           ...headers,
         },
-        ...(method !== "GET" ? { body: JSON.stringify(data) } : {}),
+        ...(method !== "GET" && method !== "DELETE" ? { body: JSON.stringify(data) } : {}),
       };
       let queryString = "";
-      if (method === "GET" && data) {
-        if (typeof data === 'object' && !Array.isArray(data)) {
-            queryString = "?" + new URLSearchParams(data as Record<string, string>).toString();
-        }
+      if (method === "GET" && data && typeof data === "object" && !Array.isArray(data)) {
+        const params = new URLSearchParams(data as Record<string, string>).toString();
+        if (params) queryString = "?" + params;
       }
 
       const response = await http2Fetch(url + queryString, config);
-  
+      const raw = await response.text();
+      const parsed = raw ? JSON.parse(raw) : null;
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new CustomError(errorData.status, errorData.message.substring(0, 50), errorData.code);
+        throw new CustomError(
+          parsed?.status || String(response.status),
+          String(parsed?.message || response.statusText || "Request failed").substring(0, 50),
+          parsed?.code || String(response.status)
+        );
       }
 
-      return await response.json();
+      return parsed ?? { status: response.status };
     } catch (error) {
       //console.error("Error making request:", error);
       throw error;

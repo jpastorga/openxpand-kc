@@ -22,11 +22,19 @@ export interface ApiItem {
     path: string;
     displayName: string;
     description: string;
-    scope: string;
+    versionId: string;
+    scopes: string[];
     title: string;
     usecase: string;
     body?: string;
     method?: string;
+}
+
+export interface ApiVersionOption {
+    id: string;
+    api: string;
+    version: string;
+    scopes: string[];
 }
 
 export interface FormData {
@@ -34,6 +42,7 @@ export interface FormData {
     clientSecret: string;
     tenant: string;
     scope: string[];
+    selectedVersions: string[];
     environment: string;
 }
 

@@ -1,6 +1,6 @@
 import { environments } from "@/app/constants";
 import { ScopeSelector } from "./ScopeSelector";
-import { FormData } from "@/types/api";
+import { ApiVersionOption, FormData } from "@/types/api";
 import { useEnvironmentStatuses } from "@/hook/useEnvironmentStatuses";
 
 interface LoginFormProps {
@@ -10,14 +10,14 @@ interface LoginFormProps {
   handleScopeChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   isLoading: boolean;
   error: string | null;
-  formattedScopeOptions: { key: string; fullValue: string }[];
+  versionOptions: ApiVersionOption[];
 }
 
-export function LoginForm({ formData, handleSubmit, handleChange, handleScopeChange, isLoading, error, formattedScopeOptions }: LoginFormProps) {
+export function LoginForm({ formData, handleSubmit, handleChange, handleScopeChange, isLoading, error, versionOptions }: LoginFormProps) {
   const { statuses, loading: loadingStatuses } = useEnvironmentStatuses();
 
   return (
-    <div className="bg-white text-openxpand p-10 rounded-2xl w-full sm:max-w-sm md:max-w-md">
+    <div className="bg-white text-openxpand p-8 rounded-2xl w-full max-w-xl">
       <h2 className="text-2xl font-roboto font-semibold mb-8">Quick Tester</h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col">
@@ -74,7 +74,7 @@ export function LoginForm({ formData, handleSubmit, handleChange, handleScopeCha
           </div>
         </div>
 
-        <ScopeSelector formData={formData} handleScopeChange={handleScopeChange} formattedScopeOptions={formattedScopeOptions} isLoading={isLoading} />
+        <ScopeSelector formData={formData} handleScopeChange={handleScopeChange} versionOptions={versionOptions} isLoading={isLoading} />
 
         <button className="text-white px-6 py-2 rounded-md mt-4 mx-auto block hover:opacity-80 transition" disabled={isLoading}>
           {isLoading ? "Loading..." : "Log In"}

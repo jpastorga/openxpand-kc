@@ -8,7 +8,9 @@ export function useApiRequest(accessToken: string, environment: string, initialI
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const [responses, setResponses] = useState<{ [key: string]: ApiErrorResponse | null }>({});
   const [inputs, setInputs] = useState(initialInputs);
-  const [assignmentId, setAssignmentId] = useState<string | null>(null);
+  const [pathIds, setPathIds] = useState<Record<string, string>>({
+    profileName: "prorizacion_api_qod",
+  });
 
 
   const handleSubmit = async (apiName: string, path: string, method = "POST") => {
@@ -37,8 +39,29 @@ export function useApiRequest(accessToken: string, environment: string, initialI
         },
       });
       setResponses((prev) => ({ ...prev, [apiName]: response }));
-      if (apiName === 'qosProvisioningCreate' && response?.assignmentId) {
-        setAssignmentId(response.assignmentId);
+      if (apiName === "qosProvisioningCreate" && response?.assignmentId) {
+        setPathIds((prev) => ({ ...prev, assignmentId: response.assignmentId }));
+      }
+      if (apiName === "smsDeliveryCreate" && response?.subscriptionId) {
+        setPathIds((prev) => ({ ...prev, subscriptionId: response.subscriptionId }));
+      }
+      if (apiName === "otpSendCode" && response?.authenticationId) {
+        setPathIds((prev) => ({ ...prev, authenticationId: response.authenticationId }));
+        setInputs((prev) => {
+          try {
+            const current = prev.otpValidateCode ? JSON.parse(prev.otpValidateCode) : {};
+            return {
+              ...prev,
+              otpValidateCode: JSON.stringify(
+                { ...current, authenticationId: response.authenticationId },
+                null,
+                2
+              ),
+            };
+          } catch {
+            return prev;
+          }
+        });
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -66,5 +89,5 @@ export function useApiRequest(accessToken: string, environment: string, initialI
     }
   };
 
-  return { loading, responses, inputs, setInputs, handleSubmit, assignmentId };
+  return { loading, responses, inputs, setInputs, handleSubmit, pathIds };
 }

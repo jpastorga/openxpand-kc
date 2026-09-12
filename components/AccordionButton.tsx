@@ -16,7 +16,7 @@ interface AccordionButtonProps {
   inputs: { [key: string]: string };
   setInputs: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
   handleSubmit: (apiName: string, path: string, method?: string) => Promise<void>;
-  assignmentId: string | null;
+  pathIds: Record<string, string>;
 }
 
 function AccordionButton({
@@ -33,7 +33,7 @@ function AccordionButton({
   inputs,
   setInputs,
   handleSubmit,
-  assignmentId
+  pathIds
 }: AccordionButtonProps) {
 
   const [curlCommand, setCurlCommand] = useState<string | null>(null);
@@ -46,12 +46,14 @@ function AccordionButton({
 
     let updatedPath = path;
 
-    if (assignmentId) {
-      updatedPath = updatedPath.replace(/{assignmentId}/g, assignmentId);
+    for (const [key, value] of Object.entries(pathIds)) {
+      if (value) {
+        updatedPath = updatedPath.replaceAll(`{${key}}`, value);
+      }
     }
 
     return updatedPath;
-  }, [path, assignmentId, name]);
+  }, [path, pathIds]);
 
   useEffect(() => {
     try {

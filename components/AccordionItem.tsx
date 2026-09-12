@@ -11,7 +11,7 @@ interface AccordionItemProps {
   inputs: { [key: string]: string };
   setInputs: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
   handleSubmit: (apiName: string, path: string, method?: string) => Promise<void>;
-  assignmentId: string | null;
+  pathIds: Record<string, string>;
 }
 
 const AccordionItem = ({
@@ -23,7 +23,7 @@ const AccordionItem = ({
   inputs,
   setInputs,
   handleSubmit,
-  assignmentId
+  pathIds
 }: AccordionItemProps) => {
   const [isActive, setIsActive] = useState(false);
 
@@ -47,7 +47,7 @@ const AccordionItem = ({
         inputs={inputs}
         setInputs={setInputs}
         handleSubmit={handleSubmit}
-        assignmentId={assignmentId}
+        pathIds={pathIds}
       />
     </div>
   );

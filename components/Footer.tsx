@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { environments } from "@/app/constants";
 
 interface FooterProps {
@@ -10,14 +9,8 @@ interface FooterProps {
 }
 
 export function Footer({ env, tenant }: FooterProps) {
-  const [urlPortal, setUrlPortal] = useState<string>("");
-
-  useEffect(() => {
-    const url = environments[env as keyof typeof environments]?.portal;
-    if (url && tenant) {
-      setUrlPortal(url.replace(":tenant", tenant));
-    }
-  }, [env, tenant]);
+  const url = environments[env as keyof typeof environments]?.portal;
+  const urlPortal = url && tenant ? url.replace(":tenant", tenant) : "";
 
   if (!urlPortal) return null;
 

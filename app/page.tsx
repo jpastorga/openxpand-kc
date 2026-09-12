@@ -1,12 +1,13 @@
 "use client";
 import { useState, useEffect, useMemo, useRef, useCallback, Suspense } from "react";
-import { scopeOptions, environments } from "./constants";
+import { environments } from "./constants";
 import { FormDataWithCode } from "@/types/api";
 import { Header, Footer, StepWizard, LoginForm, SearchParamsHandler }  from "@/components";
 import { ApiCaller } from "@/components/ApiCaller";
 import { safeDecode } from "@/utils/safeDecode";
 import { generateAuthUrl } from "@/utils/url";
 import { usePersistentFormData } from "@/hook/usePersistentFormData";
+import { getApiVersionOptions, resolveOAuthScopes, selectedVersionsFromParams, toggleVersionSelection } from "@/lib/scopes";
 
 
 export default function Home() {
@@ -18,20 +19,14 @@ export default function Home() {
   //const [selectedScope, setSelectedScope] = useState<string[]>([]);
   const hasHandledCode = useRef(false);
 
-  const formattedScopeOptions = useMemo(
-    () =>
-      scopeOptions.map((option: string) => {
-        const [key, value] = option.split("#");
-        return { key: value, fullValue: `${key}#${value}` };
-      }),
-    []
-  );
+  const versionOptions = useMemo(() => getApiVersionOptions(), []);
 
   const initialFormData = {
     clientId: "",
     clientSecret: "",
     tenant: "",
     scope: [],
+    selectedVersions: [],
     environment: "development",
   };
   
@@ -46,19 +41,21 @@ export default function Home() {
     const clientIdDecrypted = safeDecode(searchParams.get("clientId") || "");
     const clientSecretDecrypted = safeDecode(searchParams.get("clientSecret") || "");
     const tenantDecrypted = safeDecode(searchParams.get("tenant") || "");
-    const scopeFromParams = searchParams.get("scope")?.split(" ") || [];
-
-    const matchedScopes = scopeOptions.filter(option => {
-      const [, optionValue] = option.split("#");
-      return scopeFromParams.includes(optionValue);
-    });
+    const scopeFromParams = searchParams.get("scope")?.split(" ").filter(Boolean) || [];
+    const matchedFromParams = selectedVersionsFromParams(scopeFromParams);
+    const selectedVersions = matchedFromParams.length > 0
+      ? matchedFromParams
+      : (formData.selectedVersions?.length
+          ? formData.selectedVersions
+          : selectedVersionsFromParams(formData.scope));
 
     const newFormData = {
       ...formData,
       clientId: clientIdDecrypted || formData.clientId,
       clientSecret: clientSecretDecrypted || formData.clientSecret,
       tenant: tenantDecrypted || formData.tenant,
-      scope: matchedScopes.length > 0 ? matchedScopes : formData.scope,
+      selectedVersions,
+      scope: selectedVersions.length ? resolveOAuthScopes(selectedVersions) : formData.scope,
     };
 
     if (JSON.stringify(newFormData) !== JSON.stringify(formData)) {
@@ -88,18 +85,19 @@ export default function Home() {
   const handleScopeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     setFormData((prevData) => {
-      const updatedScopes = checked
-        ? [...new Set([...prevData.scope, value])]
-        : prevData.scope.filter((scope) => scope !== value);
-
-      return { ...prevData, scope: updatedScopes };
+      const selectedVersions = toggleVersionSelection(prevData.selectedVersions ?? [], value, checked);
+      return {
+        ...prevData,
+        selectedVersions,
+        scope: resolveOAuthScopes(selectedVersions),
+      };
     });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const { clientId, clientSecret, scope, tenant, environment } = formData;
-    if (!clientId || !clientSecret || scope.length === 0 || !tenant || !environment) {
+    const { clientId, clientSecret, selectedVersions, tenant, environment } = formData;
+    if (!clientId || !clientSecret || (selectedVersions ?? []).length === 0 || !tenant || !environment) {
       setError("Please fill in all the required fields");
       return;
     }
@@ -149,8 +147,18 @@ export default function Home() {
   );
   
   useEffect(() => {
-    setFormData((prev) => ({ ...prev }));
-  }, [setFormData]);
+    const selected = formData.selectedVersions ?? [];
+    if (selected.length === 0 && formData.scope.length > 0) {
+      const migrated = selectedVersionsFromParams(formData.scope);
+      if (migrated.length > 0) {
+        setFormData((prev) => ({
+          ...prev,
+          selectedVersions: migrated,
+          scope: resolveOAuthScopes(migrated),
+        }));
+      }
+    }
+  }, [formData.scope, formData.selectedVersions, setFormData]);
 
   return (
     <>
@@ -162,7 +170,7 @@ export default function Home() {
         <SearchParamsHandler onParamsChange={handleSearchParamsChange} />
       </Suspense>
       <Header />
-      <main className="flex-grow flex justify-center items-center">
+      <main className="flex-grow flex justify-center items-center px-4 py-8">
       {
           !accessToken ? (
             <LoginForm formData={formData}
@@ -171,7 +179,7 @@ export default function Home() {
               handleScopeChange={handleScopeChange}
               isLoading={isLoading}
               error={error}
-              formattedScopeOptions={formattedScopeOptions}
+              versionOptions={versionOptions}
             />
           ) : (
           <>
