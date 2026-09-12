@@ -63,6 +63,8 @@ export function getApiVersionOptions(): ApiVersionOption[] {
   });
 }
 
+const PURPOSE_SCOPE = "dpv:FraudPreventionAndDetection";
+
 export function resolveOAuthScopes(selectedVersionIds: string[]): string[] {
   return [
     ...new Set(
@@ -73,21 +75,23 @@ export function resolveOAuthScopes(selectedVersionIds: string[]): string[] {
   ];
 }
 
+function matchesVersionToken(token: string, option: ApiVersionOption): boolean {
+  const raw = token.trim();
+  if (!raw || raw === PURPOSE_SCOPE) {
+    return false;
+  }
+
+  if (raw === option.id || raw === `${option.api} ${option.version}` || option.scopes.includes(raw)) {
+    return true;
+  }
+
+  const afterHash = raw.includes("#") ? raw.split("#")[1] : raw;
+  return afterHash === option.api && option.scopes.includes(`${PURPOSE_SCOPE}#${option.api}`);
+}
+
 export function selectedVersionsFromParams(params: string[]): string[] {
   return getApiVersionOptions()
-    .filter((option) => {
-      return params.some((raw) => {
-        const value = raw.includes("#") ? raw.split("#")[1] : raw;
-        return (
-          raw === option.id ||
-          value === option.id ||
-          value === option.api ||
-          raw === `${option.api} ${option.version}` ||
-          option.scopes.includes(raw) ||
-          option.scopes.includes(value)
-        );
-      });
-    })
+    .filter((option) => params.some((token) => matchesVersionToken(token, option)))
     .map((option) => option.id);
 }
 

@@ -28,7 +28,7 @@ export const apiList = [
       description: 'Verify a phone number.',
       usecase: 'numberVerification',
       versionId: 'number-verification/v0',
-      scopes: ['dpv:FraudPreventionAndDetection#number-verification', 'number-verification:verify'],
+      scopes: ['dpv:FraudPreventionAndDetection#number-verification'],
     },
     {
       name: 'retrievePhoneNumber',
@@ -40,7 +40,7 @@ export const apiList = [
       description: 'Retrieve a phone number from a device.',
       usecase: 'numberVerification',
       versionId: 'number-verification/v0',
-      scopes: ['dpv:FraudPreventionAndDetection#number-verification', 'number-verification:device-phone-number:read'],
+      scopes: ['dpv:FraudPreventionAndDetection#number-verification'],
     },
     {
       name: 'deviceStatus',
@@ -95,7 +95,7 @@ export const apiList = [
       description: 'Retrieves whether the device is reachable (DATA / SMS).',
       usecase: 'deviceReachabilityStatus',
       versionId: 'device-reachability-status/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#device-reachability-status', 'device-reachability-status:read'],
+      scopes: ['dpv:FraudPreventionAndDetection#device-reachability-status'],
     },
     {
       name: 'deviceRoamingStatus',
@@ -106,7 +106,7 @@ export const apiList = [
       description: 'Retrieves roaming status and country for a device.',
       usecase: 'deviceRoamingStatus',
       versionId: 'device-roaming-status/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#device-roaming-status', 'device-roaming-status:read'],
+      scopes: ['dpv:FraudPreventionAndDetection#device-roaming-status'],
     },
     {
       name: 'deviceLocationRetrieve',
@@ -249,7 +249,7 @@ export const apiList = [
       description: "Checks whether the subscriber relationship existed on the specified date.",
       usecase: 'kycTenure',
       versionId: 'kyc-tenure/v0.2',
-      scopes: ['dpv:FraudPreventionAndDetection#kyc-tenure', 'kyc-tenure:check-tenure'],
+      scopes: ['dpv:FraudPreventionAndDetection#kyc-tenure'],
     },
     {
       name: "deviceSwapRetrieve",
@@ -304,7 +304,7 @@ export const apiList = [
       description: "Quality On Demand Session",
       usecase: 'qualityOnDemand',
       versionId: 'quality-on-demand/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#quality-on-demand', 'quality-on-demand:sessions:create'],
+      scopes: ['dpv:FraudPreventionAndDetection#quality-on-demand'],
     },
     {
       name: "qualityOnDemandRetrieveSession",
@@ -315,7 +315,7 @@ export const apiList = [
       description: "Quality On Demand Retrieve Session",
       usecase: 'qualityOnDemand',
       versionId: 'quality-on-demand/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#quality-on-demand', 'quality-on-demand:sessions:retrieve-by-device'],
+      scopes: ['dpv:FraudPreventionAndDetection#quality-on-demand'],
     },
     {
       name: "qosProvisioningCreate",
@@ -326,7 +326,7 @@ export const apiList = [
       description: "Create a new QoS assignment",
       usecase: 'qosProvisioning',
       versionId: 'qos-provisioning/v0.3',
-      scopes: ['dpv:FraudPreventionAndDetection#qos-provisioning', 'qos-provisioning:qos-assignments:create'],
+      scopes: ['dpv:FraudPreventionAndDetection#qos-provisioning'],
     },
     {
       name: "qosProvisioningRetrieve",
@@ -338,7 +338,7 @@ export const apiList = [
       description: "Retrieve a QoS assignment by ID",
       usecase: 'qosProvisioning',
       versionId: 'qos-provisioning/v0.3',
-      scopes: ['dpv:FraudPreventionAndDetection#qos-provisioning', 'qos-provisioning:qos-assignments:read'],
+      scopes: ['dpv:FraudPreventionAndDetection#qos-provisioning'],
     },
     {
       name: "qosProvisioningDelete",
@@ -350,7 +350,7 @@ export const apiList = [
       description: "Delete a QoS assignment by ID",
       usecase: 'qosProvisioning',
       versionId: 'qos-provisioning/v0.3',
-      scopes: ['dpv:FraudPreventionAndDetection#qos-provisioning', 'qos-provisioning:qos-assignments:delete'],
+      scopes: ['dpv:FraudPreventionAndDetection#qos-provisioning'],
     },
     {
       name: "qosProvisioningRetrieveAssignment",
@@ -361,7 +361,7 @@ export const apiList = [
       description: "Retrieve QoS assignment for a device",
       usecase: 'qosProvisioning',
       versionId: 'qos-provisioning/v0.3',
-      scopes: ['dpv:FraudPreventionAndDetection#qos-provisioning', 'qos-provisioning:qos-assignments:read-by-device'],
+      scopes: ['dpv:FraudPreventionAndDetection#qos-provisioning'],
     },
     {
       name: "carrierLookup",
@@ -372,7 +372,7 @@ export const apiList = [
       description: "Retrieve carrier information for a phone number",
       usecase: 'carrierLookup',
       versionId: 'carrier-lookup/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#carrier-lookup', 'carrier-lookup:retrieve'],
+      scopes: ['dpv:FraudPreventionAndDetection#carrier-lookup'],
     },
     {
       name: "qosProfilesRetrieve",
@@ -383,7 +383,7 @@ export const apiList = [
       description: "List QoS profiles available for a device",
       usecase: 'qosProfiles',
       versionId: 'qos-profiles/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#qos-profiles', 'qos-profiles:read'],
+      scopes: ['dpv:FraudPreventionAndDetection#qos-profiles'],
     },
     {
       name: "qosProfilesGet",
@@ -395,7 +395,7 @@ export const apiList = [
       description: "Retrieve a QoS profile by name",
       usecase: 'qosProfiles',
       versionId: 'qos-profiles/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#qos-profiles', 'qos-profiles:read'],
+      scopes: ['dpv:FraudPreventionAndDetection#qos-profiles'],
     },
     {
       name: "otpSendCode",
@@ -406,7 +406,7 @@ export const apiList = [
       description: "Sends an OTP by SMS. The message must include {{code}}.",
       usecase: 'oneTimePasswordSms',
       versionId: 'one-time-password-sms/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#one-time-password-sms', 'one-time-password-sms:send-validate'],
+      scopes: ['dpv:FraudPreventionAndDetection#one-time-password-sms'],
     },
     {
       name: "otpValidateCode",
@@ -417,7 +417,7 @@ export const apiList = [
       description: "Validates an OTP using the authenticationId from send-code.",
       usecase: 'oneTimePasswordSms',
       versionId: 'one-time-password-sms/v1',
-      scopes: ['dpv:FraudPreventionAndDetection#one-time-password-sms', 'one-time-password-sms:send-validate'],
+      scopes: ['dpv:FraudPreventionAndDetection#one-time-password-sms'],
     },
     {
       name: "smsShortMessage",
@@ -428,7 +428,7 @@ export const apiList = [
       description: "Sends an SMS. Category: PROMOTION, SERVICE or TRANSACTION.",
       usecase: 'sms',
       versionId: 'sms/v0alpha1',
-      scopes: ['dpv:FraudPreventionAndDetection#sms', 'sms:short-message:create'],
+      scopes: ['dpv:FraudPreventionAndDetection#sms'],
     },
     {
       name: "smsDeliveryCreate",
@@ -439,7 +439,7 @@ export const apiList = [
       description: "Creates a subscription for SMS delivery status notifications.",
       usecase: 'smsDeliveryNotifications',
       versionId: 'sms-delivery-notification-subscriptions/v0alpha1',
-      scopes: ['dpv:FraudPreventionAndDetection#sms-delivery-notification-subscriptions', 'sms-delivery-notification-subscriptions:subscriptions:create'],
+      scopes: ['dpv:FraudPreventionAndDetection#sms-delivery-notification-subscriptions'],
     },
     {
       name: "smsDeliveryGet",
@@ -451,7 +451,7 @@ export const apiList = [
       description: "Retrieves an SMS delivery notification subscription by ID.",
       usecase: 'smsDeliveryNotifications',
       versionId: 'sms-delivery-notification-subscriptions/v0alpha1',
-      scopes: ['dpv:FraudPreventionAndDetection#sms-delivery-notification-subscriptions', 'sms-delivery-notification-subscriptions:subscriptions:read'],
+      scopes: ['dpv:FraudPreventionAndDetection#sms-delivery-notification-subscriptions'],
     },
     {
       name: "smsDeliveryDelete",
@@ -463,7 +463,7 @@ export const apiList = [
       description: "Deletes an SMS delivery notification subscription by ID.",
       usecase: 'smsDeliveryNotifications',
       versionId: 'sms-delivery-notification-subscriptions/v0alpha1',
-      scopes: ['dpv:FraudPreventionAndDetection#sms-delivery-notification-subscriptions', 'sms-delivery-notification-subscriptions:subscriptions:delete'],
+      scopes: ['dpv:FraudPreventionAndDetection#sms-delivery-notification-subscriptions'],
     },
   ];
 
