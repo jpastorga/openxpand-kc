@@ -40,20 +40,20 @@ export function useApiRequest(accessToken: string, environment: string, initialI
       });
       setResponses((prev) => ({ ...prev, [apiName]: response }));
       if (apiName === "qosProvisioningCreate" && response?.assignmentId) {
-        setPathIds((prev) => ({ ...prev, assignmentId: response.assignmentId }));
+        setPathIds((prev) => ({ ...prev, assignmentId: String(response.assignmentId) }));
       }
       if (apiName === "smsDeliveryCreate" && response?.subscriptionId) {
-        setPathIds((prev) => ({ ...prev, subscriptionId: response.subscriptionId }));
+        setPathIds((prev) => ({ ...prev, subscriptionId: String(response.subscriptionId) }));
       }
       if (apiName === "otpSendCode" && response?.authenticationId) {
-        setPathIds((prev) => ({ ...prev, authenticationId: response.authenticationId }));
+        setPathIds((prev) => ({ ...prev, authenticationId: String(response.authenticationId) }));
         setInputs((prev) => {
           try {
             const current = prev.otpValidateCode ? JSON.parse(prev.otpValidateCode) : {};
             return {
               ...prev,
               otpValidateCode: JSON.stringify(
-                { ...current, authenticationId: response.authenticationId },
+                { ...current, authenticationId: String(response.authenticationId) },
                 null,
                 2
               ),
@@ -64,15 +64,19 @@ export function useApiRequest(accessToken: string, environment: string, initialI
         });
       }
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        const customError = error as CustomError;
+      if (error instanceof CustomError) {
+        setResponses((prev) => ({
+          ...prev,
+          [apiName]: error.response,
+        }));
+      } else if (error instanceof Error) {
         setResponses((prev) => ({
           ...prev,
           [apiName]: {
-            status: customError.status || "unknown",
-            message: customError.message || "unknown",
-            code: customError.code || "unknown",
-          } as ApiErrorResponse,
+            status: "unknown",
+            message: error.message || "unknown",
+            code: "unknown",
+          },
         }));
       } else {
         setResponses((prev) => ({

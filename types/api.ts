@@ -55,4 +55,8 @@ export interface ApiErrorResponse {
     status: string;
     message: string;
     code: string;
+    assignmentId?: string;
+    subscriptionId?: string;
+    authenticationId?: string;
+    [key: string]: unknown;
 }
