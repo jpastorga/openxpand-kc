@@ -1,6 +1,5 @@
 import { ApiErrorResponse, MakeRequestOptions } from "@/types/api";
 import { CustomError } from "@/utils/CustomError";
-import { http2Fetch } from "./http2-client";
 
 
 export const makeRequest = async (options: MakeRequestOptions): Promise<ApiErrorResponse> => {
@@ -10,19 +9,11 @@ export const makeRequest = async (options: MakeRequestOptions): Promise<ApiError
     try {
       const config = {
         method,
-        headers: {
-          "Content-Type": "application/json",
-          ...headers,
-        },
-        ...(method !== "GET" && method !== "DELETE" ? { body: JSON.stringify(data) } : {}),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ method, url, data, headers }),
       };
-      let queryString = "";
-      if (method === "GET" && data && typeof data === "object" && !Array.isArray(data)) {
-        const params = new URLSearchParams(data as Record<string, string>).toString();
-        if (params) queryString = "?" + params;
-      }
 
-      const response = await http2Fetch(url + queryString, config);
+      const response = await fetch("/api/request", config);
       const raw = await response.text();
       let parsed: unknown = null;
 
