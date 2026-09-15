@@ -235,10 +235,10 @@ export const apiList = [
       path: "kyc-fill-in/v0.4/fill-in",
       body: '{"phoneNumber": "+543462641443"}',
       displayName: "Fill In v0.4",
-      description: "KYC Fill In v0.4 (extended identity fields). Requires scope kyc-fill-in:fill-in.",
+      description: "KYC Fill In v0.4 (extended identity fields). Requires scope kyc-fill-in:set-all.",
       usecase: 'kycFillIn',
       versionId: 'kyc-fill-in/v0.4',
-      scopes: ['kyc-fill-in:fill-in'],
+      scopes: ['kyc-fill-in:set-all'],
     },
     {
       name: "kycTenure",
