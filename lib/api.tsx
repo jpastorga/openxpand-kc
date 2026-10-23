@@ -8,7 +8,7 @@ export const makeRequest = async (options: MakeRequestOptions): Promise<ApiError
 
     try {
       const config = {
-        method,
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ method, url, data, headers }),
       };
