@@ -44,6 +44,7 @@ export interface FormData {
     scope: string[];
     selectedVersions: string[];
     environment: string;
+    useAuthProxy?: boolean;
 }
 
 export interface FormDataWithCode extends FormData {

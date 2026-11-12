@@ -28,6 +28,7 @@ export default function Home() {
     scope: [],
     selectedVersions: [],
     environment: "development",
+    useAuthProxy: false,
   };
   
   const [formData, setFormData] = usePersistentFormData("openxpandFormData", initialFormData);
@@ -78,7 +79,11 @@ export default function Home() {
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({...formData,[e.target.name]: e.target.value,});
+    const target = e.target;
+    const value = target instanceof HTMLInputElement && target.type === "checkbox"
+      ? target.checked
+      : target.value;
+    setFormData({...formData, [target.name]: value});
   };
 
 

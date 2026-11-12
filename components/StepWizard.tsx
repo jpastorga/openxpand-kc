@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { steps } from "@/app/constants";
+import { environments, steps } from "@/app/constants";
 import { StepWizardProps, FormDataWithCode } from "@/types/api";
 import { replacePlaceholders } from "@/utils/stringUtils";
   
@@ -95,7 +95,12 @@ export function StepWizard({title, env}: StepWizardProps) {
                                     codeRefs.current[index] = el;
                                 }
                                 }} className="break-all">
-                                curl --location {`'${replacePlaceholders(step.url, env, ["scope"])}'`} {step.headers ? `-H '${step.headers}'` : ''} {step.body ? generateCurlCommand(step.body, env) : ''}
+                                curl --location {`'${replacePlaceholders(step.url, {
+                                  ...env,
+                                  host: step.method === "GET" && env.useAuthProxy
+                                    ? environments[env.environment as keyof typeof environments].authProxy
+                                    : env.host,
+                                }, ["scope"])}'`} {step.headers ? `-H '${step.headers}'` : ''} {step.body ? generateCurlCommand(step.body, env) : ''}
                             </code>
                             <button onClick={() => handleCopy(index)} className="p-2 text-white bg-gray-700 rounded-md hover:bg-gray-600 transition">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

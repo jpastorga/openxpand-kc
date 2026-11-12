@@ -1,17 +1,20 @@
 export const environments = {
     development: {
       auth: 'https://opengw.dev.openxpand.com',
+      authProxy: 'https://auth.dev.openxpand.com',
       api: 'https://api.dev.openxpand.com/api/camara',
       //api: 'http://localhost:9091/api/camara',
       portal: 'https://developer.dev.openxpand.com/developer/es/:tenant',
     },
     testing: {
       auth: 'https://opengw.test.openxpand.com',
+      authProxy: 'https://auth.test.openxpand.com',
       api: 'https://api.test.openxpand.com/api/camara',
       portal: 'https://developer.test.openxpand.com/developer/es/:tenant',
     },
     production: {
       auth: 'https://opengw.openxpand.com',
+      authProxy: 'https://auth.openxpand.com',
       api: 'https://api.openxpand.com/api/camara',
       portal: 'https://developer.openxpand.com/developer/es/:tenant',
     },

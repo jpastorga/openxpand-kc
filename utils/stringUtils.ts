@@ -8,7 +8,8 @@ export const replacePlaceholders = (
     const encodeSet = new Set(keysToEncode);
   
     return template.replace(/:([a-zA-Z_]+)/g, (_, key) => {
-      const value = values[key as keyof FormDataWithCode] || "";
+      const rawValue = values[key as keyof FormDataWithCode] || "";
+      const value = Array.isArray(rawValue) ? rawValue : String(rawValue);
   
       if (!encodeSet.has(key)) {
         return Array.isArray(value) ? value.join("%20") : value.toString();
