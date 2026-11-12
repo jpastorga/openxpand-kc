@@ -76,27 +76,26 @@ export function LoginForm({ formData, handleSubmit, handleChange, handleScopeCha
 
         <ScopeSelector formData={formData} handleScopeChange={handleScopeChange} versionOptions={versionOptions} isLoading={isLoading} />
 
-        <div>
-          <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              id="useAuthProxy"
-              name="useAuthProxy"
-              checked={formData.useAuthProxy ?? false}
-              onChange={handleChange}
-              disabled={isLoading}
-              aria-describedby="useAuthProxyDescription"
-              className="h-5 w-5 shrink-0 accent-openxpand"
-            />
-            <label htmlFor="useAuthProxy" className="flex min-h-12 items-center cursor-pointer">
-              Send authorization code GET through the IP/port proxy
-            </label>
-          </div>
-          <p id="useAuthProxyDescription" className="mt-1 text-sm break-words">
-            Uses {environments[formData.environment as keyof typeof environments].authProxy}/auth/realms
-            {" "}directly from your browser so the proxy receives your connection&apos;s IP and port.
-            {" "}Unchecked uses the standard login.
-          </p>
+        <div className="flex justify-center">
+          <label
+            htmlFor="useAuthProxy"
+            className={`flex min-h-12 items-center gap-2 ${isLoading ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
+          >
+            <span className="text-md font-roboto font-bold text-openxpand">IP/port proxy</span>
+            <span className="relative shrink-0">
+              <input
+                type="checkbox"
+                id="useAuthProxy"
+                name="useAuthProxy"
+                checked={formData.useAuthProxy ?? false}
+                onChange={handleChange}
+                disabled={isLoading}
+                className="sr-only peer"
+              />
+              <span aria-hidden="true" className="block w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-openxpand transition-colors peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-openxpand" />
+              <span aria-hidden="true" className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-full" />
+            </span>
+          </label>
         </div>
 
         <button className="text-white px-6 py-2 rounded-md mt-4 mx-auto block hover:opacity-80 transition" disabled={isLoading}>
