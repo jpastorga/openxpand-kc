@@ -8,10 +8,11 @@ export function generateAuthUrl(formData: FormData): string {
   const host = formData.useAuthProxy ? authProxy : auth;
   const fromVersions = resolveOAuthScopes(selectedVersions ?? []);
   const oauthScopes = (fromVersions.length ? fromVersions : scope ?? []).filter(Boolean);
+  const loginHint = formData.useAuthProxy ? formData.loginHint?.trim() : "";
 
   return `${host}/auth/realms/${encodeURIComponent(tenant)}/protocol/openid-connect/auth?response_type=code&client_id=${encodeURIComponent(
     clientId
   )}&redirect_uri=${encodeURIComponent(
     window.location.origin
-  )}&scope=${encodeURIComponent(oauthScopes.join(" "))}${formData.useAuthProxy ? "&prompt=none" : ""}`;
+  )}&scope=${encodeURIComponent(oauthScopes.join(" "))}${loginHint ? `&login_hint=${encodeURIComponent(loginHint)}` : ""}`;
 }

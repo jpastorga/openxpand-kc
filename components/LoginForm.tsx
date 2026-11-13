@@ -15,6 +15,7 @@ interface LoginFormProps {
 
 export function LoginForm({ formData, handleSubmit, handleChange, handleScopeChange, isLoading, error, versionOptions }: LoginFormProps) {
   const { statuses, loading: loadingStatuses } = useEnvironmentStatuses();
+  const requiresLoginHint = formData.tenant.trim().toLowerCase().startsWith("aggregator");
 
   return (
     <div className="bg-white text-openxpand p-8 rounded-2xl w-full max-w-xl">
@@ -97,6 +98,31 @@ export function LoginForm({ formData, handleSubmit, handleChange, handleScopeCha
             </span>
           </label>
         </div>
+
+        {formData.useAuthProxy && (
+          <div className="flex flex-col">
+            <label htmlFor="loginHint" className="block text-md font-medium">
+              Phone number (login_hint) {requiresLoginHint ? "(required)" : "(optional)"}
+            </label>
+            <input
+              type="tel"
+              id="loginHint"
+              name="loginHint"
+              value={formData.loginHint ?? ""}
+              onChange={handleChange}
+              required={requiresLoginHint}
+              pattern={requiresLoginHint ? ".*\\S.*" : undefined}
+              placeholder="541134823456"
+              autoComplete="tel"
+              aria-describedby="loginHintDescription"
+              className="w-full min-h-12 mt-1 p-2 border rounded-md"
+              disabled={isLoading}
+            />
+            <p id="loginHintDescription" className="mt-1 text-sm">
+              Include the country code, e.g. 541134823456. Required for tenants starting with aggregator; optional for other tenants.
+            </p>
+          </div>
+        )}
 
         <button className="text-white px-6 py-2 rounded-md mt-4 mx-auto block hover:opacity-80 transition" disabled={isLoading}>
           {isLoading ? "Loading..." : "Log In"}

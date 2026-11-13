@@ -45,6 +45,7 @@ export interface FormData {
     selectedVersions: string[];
     environment: string;
     useAuthProxy?: boolean;
+    loginHint?: string;
 }
 
 export interface FormDataWithCode extends FormData {

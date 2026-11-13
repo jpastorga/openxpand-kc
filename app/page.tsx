@@ -29,6 +29,7 @@ export default function Home() {
     selectedVersions: [],
     environment: "development",
     useAuthProxy: false,
+    loginHint: "",
   };
   
   const [formData, setFormData] = usePersistentFormData("openxpandFormData", initialFormData);

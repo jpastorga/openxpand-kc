@@ -474,7 +474,7 @@ export const steps = [
     {
       title: "Step 1:",
       description: "Authorization code request (GET: user-side)",
-      url: `:host/auth/realms/:tenant/protocol/openid-connect/auth?response_type=code&client_id=:clientId&redirect_uri=https://openxpand-kc.vercel.app/api/callback&scope=:scope&prompt=none`,
+      url: `:host/auth/realms/:tenant/protocol/openid-connect/auth?response_type=code&client_id=:clientId&redirect_uri=https://openxpand-kc.vercel.app/api/callback&scope=:scope`,
       method: "GET"
     },
     {
