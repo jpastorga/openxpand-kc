@@ -55,7 +55,7 @@ export const apiList = [
       description: 'Verify a phone number. Provide exactly one of phoneNumber (E.164 including +) or hashedPhoneNumber (SHA-256 of that E.164 number).',
       usecase: 'numberVerification',
       versionId: 'number-verification/v2',
-      scopes: ['number-verification:verify'],
+      scopes: ['dpv:FraudPreventionAndDetection', 'number-verification:verify'],
     },
     {
       name: 'retrievePhoneNumberV2',
@@ -67,7 +67,7 @@ export const apiList = [
       description: 'Retrieve the phone number associated with the access token in E.164 format including +.',
       usecase: 'numberVerification',
       versionId: 'number-verification/v2',
-      scopes: ['number-verification:device-phone-number:read'],
+      scopes: ['dpv:FraudPreventionAndDetection', 'number-verification:device-phone-number:read'],
     },
     {
       name: 'deviceStatus',
